@@ -1,97 +1,14 @@
 //import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:namer_app/models/app_state.dart';
-import 'package:namer_app/screens/home.dart';
-import 'package:provider/provider.dart';
-import 'package:namer_app/common/theme.dart';
-import 'package:namer_app/models/cart.dart';
-import 'package:namer_app/models/catalog.dart';
-import 'package:namer_app/screens/cart.dart';
-import 'package:namer_app/screens/catalog.dart';
-import 'package:namer_app/screens/login.dart';
+import 'package:namer_app/my_app.dart';
 
-void main() {
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+Future<void> main() async {
+  await Supabase.initialize(
+    url: 'https://hcxgahxwswlctumniwpz.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjeGdhaHh3c3dsY3R1bW5pd3B6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0MTQxNDgsImV4cCI6MjA2NDk5MDE0OH0.wb4P6D-9fA4Ekr8A7JhbfMYbFqY3DDIr3NSFboOqAoE',
+  );
   runApp(MyApp());
 }
-
-GoRouter router() {
-  return GoRouter(
-    initialLocation: '/login',
-    routes: [
-      GoRoute(
-        path: '/login',
-        builder: (context, state) => const MyLogin(),
-      ),
-      GoRoute(
-        path: '/home/:userId',
-        builder: (context, state) {
-          final userId = state.pathParameters['userId']!;
-          return MyHomePage(userId: userId);
-        },
-        routes: [
-          GoRoute(
-            path: 'catalog',
-            builder: (context, state) => const MyCatalog(),
-          ),
-        ],
-      ),
-      GoRoute(
-        path: '/catalog',
-        builder: (context, state) => const MyCatalog(),
-        routes: [
-          GoRoute(
-            path: 'cart',
-            builder: (context, state) => const MyCart(),
-          ),
-        ],
-      ),
-    ],
-  );
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        // In this sample app, CatalogModel never changes, so a simple Provider
-        // is sufficient.
-        Provider(create: (context) => CatalogModel()),
-        ChangeNotifierProvider(
-      create: (context) => MyAppState(),
-      child: MaterialApp(
-        title: 'Namer App',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-        ),
-        //home: MyHomePage(),
-      ),),
-    
-// CartModel is implemented as a ChangeNotifier, which calls for the use
-        // of ChangeNotifierProvider. Moreover, CartModel depends
-        // on CatalogModel, so a ProxyProvider is needed.
-        ChangeNotifierProxyProvider<CatalogModel, CartModel>(
-          create: (context) => CartModel(),
-          update: (context, catalog, cart) {
-            if (cart == null) throw ArgumentError.notNull('cart');
-            cart.catalog = catalog;
-            return cart;
-          },
-        ),
-      ],
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        title: 'Provider Demo',
-        theme: appTheme,
-        routerConfig: router(),        
-      ),
-    );
-  }
-}
-
-
-
-
