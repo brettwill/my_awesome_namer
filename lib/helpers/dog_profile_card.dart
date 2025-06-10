@@ -12,6 +12,8 @@ class DogProfileCard extends StatelessWidget {
   final String weight;
   final String height;
   final String location;
+  final bool isSelected;
+  final VoidCallback onTap;
 
   const DogProfileCard({
     super.key,
@@ -25,6 +27,8 @@ class DogProfileCard extends StatelessWidget {
     required this.weight,
     required this.height,
     required this.location,
+    required this.isSelected,
+    required this.onTap,
   });
 
   void _launchURL() async {
@@ -35,31 +39,55 @@ class DogProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(12),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            InkWell(
-              onTap: _launchURL,
-              child: Text(
-                name,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        color: isSelected ? Colors.lightBlue[50] : null,
+        margin: EdgeInsets.all(12),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image on the left
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset(
+                  imageUrl,
+                  height: 120,
+                  width: 120,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            //   Image.asset(imageUrl, height: 100, fit: BoxFit.cover),
-            SizedBox(height: 10),
-            _infoRow(Icons.cake, "Geburtsdatum: $birthDate"),
-            _infoRow(Icons.access_time, "Alter: $age"),
-            _infoRow(Icons.pets, "Rasse: $breed"),
-            _infoRow(Icons.transgender, "Geschlecht: $gender"),
-            _infoRow(Icons.monitor_weight, "Gewicht: $weight"),
-            _infoRow(Icons.height, "Grösse: $height"),
-            _infoRow(Icons.home, "Station / Ort: $location"),
-          ],
+              SizedBox(width: 16),
+              // Info on the right
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: _launchURL,
+                      child: Text(
+                        name,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    _infoRow(Icons.cake, "Geburtsdatum: $birthDate"),
+                    _infoRow(Icons.access_time, "Alter: $age"),
+                    _infoRow(Icons.pets, "Rasse: $breed"),
+                    _infoRow(Icons.transgender, "Geschlecht: $gender"),
+                    _infoRow(Icons.monitor_weight, "Gewicht: $weight"),
+                    _infoRow(Icons.height, "Grösse: $height"),
+                    _infoRow(Icons.home, "Station / Ort: $location"),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

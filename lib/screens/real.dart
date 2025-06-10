@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:namer_app/screens/contact.dart';
 import 'package:namer_app/screens/doglist';
 import 'package:namer_app/screens/login.dart';
+import 'package:namer_app/screens/upload_image_screen.dart';
 
 // void main() {
 //   runApp(AnimalHappyendApp());
@@ -144,7 +145,15 @@ class HundeSuchePage extends StatelessWidget {
               );
             },
           ),
-          ListTile(title: Text('Projekte'), onTap: () {}),
+          ListTile(
+            title: Text('Upload Dogs'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UploadImageScreen()),
+              );
+            },
+          ),
         ],
       ),
     );

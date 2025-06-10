@@ -12,6 +12,11 @@ dependencies:
   flutter:
     sdk: flutter
   supabase_flutter: ^1.10.11
+  image_picker: ^1.0.0  # or the latest version
+  path: ^1.8.0
+  mime: ^1.0.4
+
+  
   go_router: ^13.0.1  # Use the latest version available3
 
   english_words: ^4.0.0
@@ -26,3 +31,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/MAX.png
+    - assets/images/Bella.png
+    - assets/images/bullterrier.png
+
+
