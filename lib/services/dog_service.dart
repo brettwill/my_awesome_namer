@@ -12,7 +12,9 @@ class DogService {
         .toList();
   }
 
-  Future<List<Dog>> fetchDogsWithFilter({Map<String, String>? filters}) async {
+  Future<List<DogProfile>> fetchDogsWithFilter({
+    Map<String, String>? filters,
+  }) async {
     var query = _client.from('dogs').select();
 
     filters?.forEach((key, value) {
@@ -22,7 +24,15 @@ class DogService {
     });
 
     final response = await query.order('name', ascending: true);
-    return (response as List).map((json) => Dog.fromJson(json)).toList();
+    return (response as List).map((json) => DogProfile.fromJson(json)).toList();
+  }
+
+  Future<void> insertDog(DogProfile dog) async {
+    await _client.from('dogs').insert(dog.toMap());
+  }
+
+  Future<void> updateDog(DogProfile dog) async {
+    await _client.from('dogs').update(dog.toMap()).eq('id', dog.id);
   }
 
   Future<List<DogProfile>> fetchDogsPaginated(int from, int limit) async {

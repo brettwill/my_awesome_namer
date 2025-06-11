@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/models/dog.dart';
+import 'package:namer_app/models/dog_profile.dart';
+import 'package:namer_app/screens/dog_Form.dart';
 import 'package:namer_app/services/dog_service.dart';
 import 'package:namer_app/screens/dog_detail_screen.dart';
 import 'package:namer_app/widgets/dog_filter_tile.dart';
@@ -12,7 +14,7 @@ class DogListScreenEx extends StatefulWidget {
 
 class _DogListScreenExState extends State<DogListScreenEx> {
   final DogService _dogService = DogService();
-  List<Dog> _dogs = [];
+  List<DogProfile> _dogs = [];
   List<String> _breedOptions = [];
 
   final Map<String, String> _filters = {
@@ -77,8 +79,7 @@ class _DogListScreenExState extends State<DogListScreenEx> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) =>
-                                    DogDetailScreen(dog: _dogs[index]),
+                                builder: (_) => DogForm(dog: _dogs[index]),
                               ),
                             );
                           },

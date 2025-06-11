@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/models/dog.dart';
+import 'package:namer_app/models/dog_profile.dart';
 
 class DogDetailScreen extends StatelessWidget {
-  final Dog dog;
+  final DogProfile dog;
 
   DogDetailScreen({required this.dog});
 

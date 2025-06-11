@@ -9,13 +9,10 @@ import 'package:namer_app/screens/login_screen.dart';
 
 GoRouter router() {
   return GoRouter(
-    initialLocation: '/start',
+    initialLocation: '/',
     routes: [
       GoRoute(path: '/login', builder: (context, state) => const MyLogin()),
-      GoRoute(
-        path: '/start',
-        builder: (context, state) => const HundeSuchePage(),
-      ),
+      GoRoute(path: '/', builder: (context, state) => const HundeSuchePage()),
       GoRoute(
         path: '/home/:username',
         builder: (context, state) {
