@@ -1,0 +1,94 @@
+import 'package:flutter/material.dart';
+import 'package:namer_app/models/dog.dart';
+import 'package:namer_app/services/dog_service.dart';
+import 'package:namer_app/screens/dog_detail_screen.dart';
+import 'package:namer_app/widgets/dog_filter_tile.dart';
+import 'package:namer_app/widgets/dog_list_item.dart';
+
+class DogListScreenEx extends StatefulWidget {
+  @override
+  _DogListScreenExState createState() => _DogListScreenExState();
+}
+
+class _DogListScreenExState extends State<DogListScreenEx> {
+  final DogService _dogService = DogService();
+  List<Dog> _dogs = [];
+  List<String> _breedOptions = [];
+
+  final Map<String, String> _filters = {
+    'name': '',
+    'breed': '',
+    'gender': '',
+    'age': '',
+    'location': '',
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDogs();
+    _loadBreeds();
+  }
+
+  void _loadDogs() async {
+    final dogs = await _dogService.fetchDogsWithFilter(filters: _filters);
+    setState(() {
+      _dogs = dogs;
+    });
+  }
+
+  void _loadBreeds() async {
+    final breeds = await _dogService.fetchBreeds();
+    setState(() {
+      _breedOptions = breeds;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Dog Browser')),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            DogFilterTile(
+              filters: _filters,
+              breedOptions: _breedOptions,
+              onFilterChanged: _loadDogs,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Results',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: _dogs.isEmpty
+                  ? Center(child: Text('No dogs found.'))
+                  : ListView.builder(
+                      itemCount: _dogs.length,
+                      itemBuilder: (context, index) {
+                        return DogListItem(
+                          dog: _dogs[index],
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    DogDetailScreen(dog: _dogs[index]),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
