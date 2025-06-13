@@ -104,4 +104,44 @@ class DogService {
 
     return null;
   }
+
+  /// Assign a dog to a user
+  Future<void> assignDogToUser(String userId, String dogId) async {
+    print('Assigning dog to user... $userId  $dogId ');
+    print('Current user: ${_client.auth.currentUser}');
+    final response = await _client
+        .from('user_dogs')
+        .insert({'user_id': userId, 'dog_id': dogId})
+        .timeout(Duration(seconds: 10));
+
+    //print('Insert response: ${response.data}');
+    if (response?.error != null) {
+      print('Insert error: ${response.error!.message}');
+      throw Exception('Insert failed: ${response.error!.message}');
+    }
+  }
+
+  /// Remove a dog from a user
+  Future<void> removeDogFromUser(String userId, String dogId) async {
+    await _client
+        .from('user_dogs')
+        .delete()
+        .eq('user_id', userId)
+        .eq('dog_id', dogId);
+  }
+
+  Future<List<DogProfile>> fetchDogsByUserId(String userId) async {
+    final response = await _client
+        .from('user_dogs')
+        .select('dog_id, dogs(*)')
+        .eq('user_id', userId);
+
+    if (response is List) {
+      return response
+          .map((e) => DogProfile.fromMap(e['dogs'] as Map<String, dynamic>))
+          .toList();
+    }
+
+    return [];
+  }
 }

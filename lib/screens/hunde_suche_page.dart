@@ -5,6 +5,7 @@ import 'package:namer_app/screens/dog_list_screen.dart';
 import 'package:namer_app/screens/doglist.dart';
 import 'package:namer_app/screens/login_screen.dart';
 import 'package:namer_app/screens/upload_image_screen.dart';
+import 'package:namer_app/screens/user_dog_manager_screen.dart';
 import 'package:provider/provider.dart';
 
 class HundeSuchePage extends StatelessWidget {
@@ -92,6 +93,8 @@ class HundeSuchePage extends StatelessWidget {
   }
 
   Drawer buildNavigationDrawer(BuildContext context) {
+    final userId = Provider.of<UserProvider>(context).userId;
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -149,6 +152,21 @@ class HundeSuchePage extends StatelessWidget {
               );
             },
           ),
+
+          // ✅ Only show this if user is logged in
+          if (userId != null)
+            ListTile(
+              title: Text('Select Dogs'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserDogManagerScreen(userId: userId),
+                  ),
+                );
+              },
+            ),
+
           ListTile(
             title: Text('Upload Dogs'),
             onTap: () {
