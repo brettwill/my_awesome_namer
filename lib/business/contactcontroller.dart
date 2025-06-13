@@ -1,4 +1,4 @@
-import 'package:namer_app/repository/contactrepository.dart';
+import 'package:namer_app/services/contactrepository.dart';
 
 class ContactController {
   final ContactRepository repository = ContactRepository();

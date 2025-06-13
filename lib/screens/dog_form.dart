@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/business/user_provider.dart';
 import 'package:namer_app/models/dog_profile.dart';
 //import 'models/dog.dart'; // Your Dog model
 import '../business/dog_provider.dart'; // Your Provider
@@ -89,11 +90,13 @@ class _DogFormState extends State<DogForm> {
     String label,
     TextEditingController controller, {
     bool required = false,
+    bool readOnly = false,
   }) {
     return TextFormField(
       controller: controller,
+      readOnly: readOnly,
       decoration: InputDecoration(labelText: label),
-      validator: required
+      validator: required && !readOnly
           ? (value) => value == null || value.isEmpty ? 'Required' : null
           : null,
     );
@@ -101,6 +104,7 @@ class _DogFormState extends State<DogForm> {
 
   @override
   Widget build(BuildContext context) {
+    final isAdmin = Provider.of<UserProvider>(context).isAdmin;
     final isUpdate = widget.dog != null;
 
     return Scaffold(
@@ -111,25 +115,46 @@ class _DogFormState extends State<DogForm> {
           key: _formKey,
           child: ListView(
             children: [
-              _buildTextField('Name', nameController, required: true),
-              _buildTextField('Image URL', imageUrlController, required: true),
+              _buildTextField(
+                'Name',
+                nameController,
+                required: true,
+                readOnly: !isAdmin,
+              ),
+              _buildTextField(
+                'Image URL',
+                imageUrlController,
+                required: true,
+                readOnly: !isAdmin,
+              ),
               _buildTextField(
                 'Profile URL',
                 profileUrlController,
                 required: true,
+                readOnly: !isAdmin,
               ),
-              _buildTextField('Breed', breedController),
-              _buildTextField('Gender', genderController),
-              _buildTextField('Birth Date', birthDateController),
-              _buildTextField('Age', ageController),
-              _buildTextField('Weight', weightController),
-              _buildTextField('Height', heightController),
-              _buildTextField('Location', locationController),
+              _buildTextField('Breed', breedController, readOnly: !isAdmin),
+              _buildTextField('Gender', genderController, readOnly: !isAdmin),
+              _buildTextField(
+                'Birth Date',
+                birthDateController,
+                readOnly: !isAdmin,
+              ),
+              _buildTextField('Age', ageController, readOnly: !isAdmin),
+              _buildTextField('Weight', weightController, readOnly: !isAdmin),
+              _buildTextField('Height', heightController, readOnly: !isAdmin),
+              _buildTextField(
+                'Location',
+                locationController,
+                readOnly: !isAdmin,
+              ),
+
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: Text(isUpdate ? 'Update' : 'Add'),
-              ),
+              if (isAdmin)
+                ElevatedButton(
+                  onPressed: _submitForm,
+                  child: Text(isUpdate ? 'Update' : 'Add'),
+                ),
             ],
           ),
         ),

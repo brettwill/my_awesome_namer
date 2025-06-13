@@ -62,17 +62,26 @@ class DogProfile {
     );
   }
 
-  Map<String, dynamic> toMap() => {
-    'id': id,
-    'name': name,
-    'image_url': imageUrl,
-    'profile_url': profileUrl,
-    'birth_date': birthDate,
-    'age': age,
-    'breed': breed,
-    'gender': gender,
-    'weight': weight,
-    'height': height,
-    'location': location,
-  };
+  Map<String, dynamic> toMap() {
+    final map = {
+      'name': name,
+      'image_url': imageUrl,
+      'profile_url': profileUrl,
+      'birth_date': birthDate,
+      'age': age,
+      'breed': breed,
+      'gender': gender,
+      'weight': weight,
+      'height': height,
+      'location': location,
+      'created_at': createdAt,
+    };
+
+    // Only include ID if it's not empty
+    if (id.isNotEmpty) {
+      map['id'] = id;
+    }
+
+    return map;
+  }
 }

@@ -144,4 +144,44 @@ class DogService {
 
     return [];
   }
+
+  Future<Map<String, dynamic>?> registerUser({
+    required String username,
+    required String password,
+    required String tierCode,
+  }) async {
+    // Determine tier from code
+    String tier;
+    switch (tierCode) {
+      case 'TIER1CODE':
+        tier = 'Basic';
+        break;
+      case 'TIER2CODE':
+        tier = 'Premium';
+        break;
+      case 'TIER3CODE':
+        tier = 'Admin';
+        break;
+      default:
+        return null; // Invalid code
+    }
+
+    final isAdmin = tier == 'Admin';
+
+    final response = await _client
+        .from('users')
+        .insert({
+          'username': username,
+          'password': password, // ⚠️ Consider hashing
+          'isAdmin': isAdmin,
+        })
+        .select()
+        .single();
+
+    if (response != null && response['id'] != null) {
+      return {'id': response['id'], 'tier': tier, 'isAdmin': isAdmin};
+    }
+
+    return null;
+  }
 }

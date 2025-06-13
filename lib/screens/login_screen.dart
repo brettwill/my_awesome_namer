@@ -71,6 +71,13 @@ class _MyLoginState extends State<MyLogin> {
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
                 child: const Text('ENTER'),
               ),
+              TextButton(
+                onPressed: () {
+                  context.push('/register'); // Make sure this route exists
+                },
+                child: const Text('Register Now'),
+              ),
+
               if (_errorMessage != null) ...[
                 const SizedBox(height: 16),
                 Text(_errorMessage!, style: const TextStyle(color: Colors.red)),

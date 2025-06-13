@@ -4,6 +4,8 @@ import 'package:namer_app/screens/dog_Form.dart';
 import 'package:namer_app/services/dog_service.dart';
 import 'package:namer_app/widgets/dog_filter_tile.dart';
 import 'package:namer_app/widgets/dog_list_item.dart';
+import 'package:provider/provider.dart';
+import 'package:namer_app/business/user_provider.dart';
 
 class DogListScreenEx extends StatefulWidget {
   @override
@@ -57,13 +59,32 @@ class _DogListScreenExState extends State<DogListScreenEx> {
               breedOptions: _breedOptions,
               onFilterChanged: _loadDogs,
             ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Results',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Results', style: Theme.of(context).textTheme.titleMedium),
+                Consumer<UserProvider>(
+                  builder: (context, userProvider, child) {
+                    return userProvider.isAdmin
+                        ? ElevatedButton.icon(
+                            onPressed: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const DogForm(),
+                                ),
+                              );
+                              _loadDogs(); // Refresh the list after adding a new dog
+                            },
+                            icon: const Icon(Icons.add),
+                            label: const Text('Add Dog'),
+                          )
+                        : const SizedBox.shrink(); // Empty widget if not admin
+                  },
+                ),
+              ],
             ),
+
             const SizedBox(height: 8),
             Expanded(
               child: _dogs.isEmpty

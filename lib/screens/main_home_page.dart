@@ -8,16 +8,17 @@ import 'package:namer_app/screens/upload_image_screen.dart';
 import 'package:namer_app/screens/user_dog_manager_screen.dart';
 import 'package:provider/provider.dart';
 
-class HundeSuchePage extends StatelessWidget {
+class MainHomePage extends StatelessWidget {
   final String userName;
   static const List<String> imagePaths = [
     'assets/images/Cosma.png',
     'assets/images/Bella.png',
     'assets/images/Max.png',
     'assets/images/bullterrier.png',
+    'assets/images/brutus.png',
   ];
 
-  const HundeSuchePage({super.key, required this.userName});
+  const MainHomePage({super.key, required this.userName});
   Widget buildIconBox({
     required IconData icon,
     required String title,
@@ -112,7 +113,7 @@ class HundeSuchePage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HundeSuchePage(userName: userName),
+                  builder: (context) => MainHomePage(userName: userName),
                 ),
               );
             },

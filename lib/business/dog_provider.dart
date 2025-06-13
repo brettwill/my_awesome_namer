@@ -1,28 +1,42 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/dog_profile.dart';
+import '../services/dog_service.dart';
 
 class DogProvider with ChangeNotifier {
-  final SupabaseClient _client = Supabase.instance.client;
+  final DogService _dogService = DogService();
   List<DogProfile> _dogs = [];
 
   List<DogProfile> get dogs => _dogs;
 
   Future<void> loadDogs() async {
-    final response = await _client.from('dogs').select().order('created_at');
-    _dogs = (response as List)
-        .map((item) => DogProfile.fromMap(item as Map<String, dynamic>))
-        .toList();
-    notifyListeners();
+    try {
+      _dogs = await _dogService.fetchDogs();
+      notifyListeners();
+      log('Loaded ${_dogs.length} dogs');
+    } catch (e, stackTrace) {
+      log('Failed to load dogs: $e', stackTrace: stackTrace);
+    }
   }
 
   Future<void> addDog(DogProfile dog) async {
-    await _client.from('dogs').insert(dog.toMap());
-    await loadDogs();
+    try {
+      log('Start Dog added: ${dog.name}');
+      await _dogService.insertDog(dog);
+      log('Dog added: ${dog.name}');
+      await loadDogs();
+    } catch (e, stackTrace) {
+      log('Failed to add dog: $e', stackTrace: stackTrace);
+    }
   }
 
   Future<void> updateDog(DogProfile dog) async {
-    await _client.from('dogs').update(dog.toMap()).eq('id', dog.id);
-    await loadDogs();
+    try {
+      await _dogService.updateDog(dog);
+      log('Dog updated: ${dog.name}');
+      await loadDogs();
+    } catch (e, stackTrace) {
+      log('Failed to update dog: $e', stackTrace: stackTrace);
+    }
   }
 }

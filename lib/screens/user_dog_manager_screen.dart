@@ -72,7 +72,23 @@ class _UserDogManagerScreenState extends State<UserDogManagerScreen> {
               final isAssigned = _userDogIds.contains(dog.id);
 
               return CheckboxListTile(
-                title: Text(dog.name),
+                title: Row(
+                  children: [
+                    if (dog.imageUrl.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Image.network(
+                          dog.imageUrl,
+                          width: 40,
+                          height: 40,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Icon(Icons.image_not_supported),
+                        ),
+                      ),
+                    Expanded(child: Text(dog.name)),
+                  ],
+                ),
                 value: isAssigned,
                 onChanged: (bool? value) {
                   if (value != null) {

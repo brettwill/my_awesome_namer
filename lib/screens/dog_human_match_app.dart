@@ -5,6 +5,7 @@ class DogHumanMatchApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       title: 'Match Your Pet to You',
       theme: ThemeData(
         brightness: Brightness.light,
