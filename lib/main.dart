@@ -1,6 +1,7 @@
 //import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:namer_app/business/dog_provider.dart' show DogProvider;
+import 'package:namer_app/business/user_provider.dart';
 import 'package:namer_app/screens/real.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +28,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => DogProvider()..loadDogs()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
         // Add more providers here if needed
       ],
       child: DogHumanMatchApp(), // ✅ This includes all routes/screens

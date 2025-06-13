@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/models/dog.dart';
 import 'package:namer_app/models/dog_profile.dart';
 import 'package:namer_app/screens/dog_Form.dart';
 import 'package:namer_app/services/dog_service.dart';
-import 'package:namer_app/screens/dog_detail_screen.dart';
 import 'package:namer_app/widgets/dog_filter_tile.dart';
 import 'package:namer_app/widgets/dog_list_item.dart';
 

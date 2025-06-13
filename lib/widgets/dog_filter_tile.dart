@@ -10,8 +10,8 @@ class DogFilterTile extends StatelessWidget {
     required this.filters,
     required this.breedOptions,
     required this.onFilterChanged,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   Widget _buildFilterField(BuildContext context, String label, String key) {
     if (key == 'gender') {

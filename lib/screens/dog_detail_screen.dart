@@ -36,7 +36,7 @@ class DogDetailScreen extends StatelessWidget {
                 // Right side: image aligned to bottom
                 Align(
                   alignment: Alignment.bottomRight,
-                  child: Container(
+                  child: SizedBox(
                     height: constraints.maxHeight,
                     child: AspectRatio(
                       aspectRatio: 1,

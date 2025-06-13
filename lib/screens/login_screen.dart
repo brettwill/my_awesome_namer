@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:namer_app/business/user_provider.dart';
 import 'package:namer_app/controllers/login_controller.dart';
+import 'package:provider/provider.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({super.key});
@@ -20,8 +22,15 @@ class _MyLoginState extends State<MyLogin> {
     final username = _usernameController.text.trim();
     final password = _passwordController.text;
 
-    final success = await _controller.login(username, password);
-    if (success) {
+    final result = await _controller.loginGetIdAdmin(username, password);
+
+    if (!mounted) return; // ✅ Prevent using context if widget is disposed
+
+    if (result != null) {
+      final userId = result['id'];
+      final isAdmin = result['isAdmin'];
+      Provider.of<UserProvider>(context, listen: false).setUserId(userId);
+      Provider.of<UserProvider>(context, listen: false).setIsAdmin(isAdmin);
       context.pushReplacement('/home/$username');
     } else {
       setState(() {

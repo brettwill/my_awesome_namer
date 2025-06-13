@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class DogForm extends StatefulWidget {
   final DogProfile? dog; // If null, it's an insert; otherwise, it's an update
 
-  const DogForm({Key? key, this.dog}) : super(key: key);
+  const DogForm({super.key, this.dog});
 
   @override
   State<DogForm> createState() => _DogFormState();

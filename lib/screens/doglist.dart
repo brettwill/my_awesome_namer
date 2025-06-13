@@ -4,7 +4,7 @@ import '../services/dog_service.dart';
 import '../helpers/dog_profile_card.dart';
 
 class DogListScreen extends StatefulWidget {
-  const DogListScreen({Key? key}) : super(key: key);
+  const DogListScreen({super.key});
 
   @override
   _DogListScreenState createState() => _DogListScreenState();
@@ -28,7 +28,10 @@ class _DogListScreenState extends State<DogListScreen> {
     setState(() {
       _isLoading = true;
     });
-    final dogs = await _dogService.fetchDogsPaginated(_page * _pageSize, _pageSize);
+    final dogs = await _dogService.fetchDogsPaginated(
+      _page * _pageSize,
+      _pageSize,
+    );
     setState(() {
       _dogs = dogs;
       _isLoading = false;
@@ -68,7 +71,9 @@ class _DogListScreenState extends State<DogListScreen> {
       context: context,
       builder: (_) => AlertDialog(
         title: Text('Selected Dogs'),
-        content: Text(selectedNames.isNotEmpty ? selectedNames : 'No dogs selected.'),
+        content: Text(
+          selectedNames.isNotEmpty ? selectedNames : 'No dogs selected.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -125,7 +130,9 @@ class _DogListScreenState extends State<DogListScreen> {
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: ElevatedButton(
-                    onPressed: _selectedDogs.isNotEmpty ? _submitSelectedDogs : null,
+                    onPressed: _selectedDogs.isNotEmpty
+                        ? _submitSelectedDogs
+                        : null,
                     child: Text('Submit Selected Dogs'),
                   ),
                 ),

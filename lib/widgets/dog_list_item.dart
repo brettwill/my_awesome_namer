@@ -6,8 +6,7 @@ class DogListItem extends StatelessWidget {
   final DogProfile dog;
   final VoidCallback onTap;
 
-  const DogListItem({required this.dog, required this.onTap, Key? key})
-    : super(key: key);
+  const DogListItem({required this.dog, required this.onTap, super.key});
 
   @override
   Widget build(BuildContext context) {
