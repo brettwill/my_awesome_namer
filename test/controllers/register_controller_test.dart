@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:namer_app/controllers/register_controller.dart';
 import '../mocks/mock_dog_service.dart';
 

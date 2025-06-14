@@ -64,7 +64,7 @@ class _MyLoginState extends State<MyLogin> {
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [const Color(0xFF1B5E20), Colors.green],
+                colors: [Color(0xFF1B5E20), Colors.green],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),

@@ -4,7 +4,6 @@ import 'package:namer_app/screens/contact.dart';
 import 'package:namer_app/screens/dog_list_screen.dart';
 import 'package:namer_app/screens/doglist.dart';
 import 'package:namer_app/screens/login_screen.dart';
-import 'package:namer_app/screens/upload_image_screen.dart';
 import 'package:namer_app/screens/user_dog_manager_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -197,8 +196,12 @@ class MainHomePage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.search),
+            tooltip: 'Search',
             onPressed: () {
-              // Add search functionality here
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DogListScreenEx()),
+              );
             },
           ),
           if (Provider.of<UserProvider>(context).userId == null)

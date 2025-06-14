@@ -4,19 +4,19 @@ class ContactRepository {
   final SupabaseClient _client = Supabase.instance.client;
 
   Future<void> sendContactData({
-    required String anrede,
-    required String vorname,
-    required String name,
+    required String salutation,
+    required String firstName,
+    required String lastName,
     required String email,
-    required String telefonnummer,
+    required String phoneNumber,
   }) async {
     try {
       await _client.from('contacts').insert({
-        'anrede': anrede,
-        'vorname': vorname,
-        'name': name,
+        'salutation': salutation,
+        'first_name': firstName,
+        'last_name': lastName,
         'email': email,
-        'telefonnummer': telefonnummer,
+        'phone_number': phoneNumber,
       });
     } on PostgrestException catch (e) {
       // Handle Supabase-specific errors

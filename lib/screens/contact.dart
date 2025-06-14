@@ -62,9 +62,21 @@ class _ContactPageState extends State<ContactPage> {
                 decoration: InputDecoration(labelText: 'Email*'),
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) => _email = value,
-                validator: (value) =>
-                    value!.isEmpty ? 'Email is required' : null,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Email is required';
+                  }
+                  // Simple email regex pattern
+                  final emailRegex = RegExp(
+                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                  );
+                  if (!emailRegex.hasMatch(value)) {
+                    return 'Enter a valid email address';
+                  }
+                  return null;
+                },
               ),
+
               SizedBox(height: 16),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Phone Number*'),
@@ -78,11 +90,11 @@ class _ContactPageState extends State<ContactPage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     controller.submitContactForm(
-                      anrede: _salutation!,
-                      vorname: _firstName,
-                      name: _lastName,
+                      salutation: _salutation!,
+                      firstName: _firstName,
+                      lastName: _lastName,
                       email: _email,
-                      telefonnummer: _phoneNumber,
+                      phoneNumber: _phoneNumber,
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Form submitted successfully!')),

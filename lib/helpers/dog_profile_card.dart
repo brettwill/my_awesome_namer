@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/helpers/safe_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DogProfileCard extends StatelessWidget {
@@ -52,13 +53,9 @@ class DogProfileCard extends StatelessWidget {
               // Image on the left
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  imageUrl,
-                  height: 120,
-                  width: 120,
-                  fit: BoxFit.cover,
-                ),
+                child: SafeImage(imagePath: imageUrl, height: 120, width: 120),
               ),
+
               SizedBox(width: 16),
               // Info on the right
               Expanded(

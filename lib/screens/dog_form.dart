@@ -107,7 +107,11 @@ class _DogFormState extends State<DogForm> {
     final isUpdate = widget.dog != null;
 
     return Scaffold(
-      appBar: AppBar(title: Text(isUpdate ? 'Update Dog' : 'Add Dog')),
+      appBar: AppBar(
+        title: Text(
+          isAdmin ? (isUpdate ? 'Update Dog' : 'Add Dog') : 'Details',
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(

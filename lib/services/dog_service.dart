@@ -155,7 +155,6 @@ class DogService {
     switch (tierCode) {
       case 'TIER3CODE':
         tier = 'Admin';
-        break;
       default:
         tier = 'Basic';
     }

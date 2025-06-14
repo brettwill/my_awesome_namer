@@ -4,23 +4,23 @@ class ContactController {
   final ContactRepository repository = ContactRepository();
 
   Future<void> submitContactForm({
-    required String anrede,
-    required String vorname,
-    required String name,
+    required String salutation,
+    required String firstName,
+    required String lastName,
     required String email,
-    required String telefonnummer,
+    required String phoneNumber,
   }) async {
     try {
       await repository.sendContactData(
-        anrede: anrede,
-        vorname: vorname,
-        name: name,
+        salutation: salutation,
+        firstName: firstName,
+        lastName: lastName,
         email: email,
-        telefonnummer: telefonnummer,
+        phoneNumber: phoneNumber,
       );
-      print('Kontakt erfolgreich gesendet!');
+      print('Contact info  sent successfully!');
     } catch (e) {
-      print('Fehler: $e');
+      print('Error: $e');
     }
   }
 }
