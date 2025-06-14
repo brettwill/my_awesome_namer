@@ -48,13 +48,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
       tierCode: code,
     );
 
-    if (result != null) {
+    if (result != null && result['error'] == null) {
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       userProvider.setUserId(result['id']);
       userProvider.setIsAdmin(result['isAdmin']);
       context.go('/home/$username');
     } else {
-      setState(() => _errorMessage = 'Registration failed. Try again.');
+      setState(
+        () => _errorMessage =
+            result?['error'] ?? 'Registration failed. Try again.',
+      );
     }
   }
 

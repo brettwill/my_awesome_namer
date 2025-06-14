@@ -157,25 +157,41 @@ class DogService {
         tier = 'Admin';
         break;
       default:
-        tier = 'Basic'; // default
+        tier = 'Basic';
     }
 
     final isAdmin = tier == 'Admin';
 
-    final response = await _client
-        .from('users')
-        .insert({
-          'username': username,
-          'password': password, // ⚠️ Consider hashing
-          'isAdmin': isAdmin,
-        })
-        .select()
-        .single();
+    try {
+      // Check if username already exists
+      final existingUser = await _client
+          .from('users')
+          .select('id')
+          .eq('username', username)
+          .maybeSingle();
 
-    if (response != null && response['id'] != null) {
-      return {'id': response['id'], 'tier': tier, 'isAdmin': isAdmin};
+      if (existingUser != null) {
+        return {'error': 'Username already exists'};
+      }
+
+      // Proceed with registration
+      final response = await _client
+          .from('users')
+          .insert({
+            'username': username,
+            'password': password, // ⚠️ Consider hashing
+            'isAdmin': isAdmin,
+          })
+          .select()
+          .single();
+
+      if (response != null && response['id'] != null) {
+        return {'id': response['id'], 'tier': tier, 'isAdmin': isAdmin};
+      }
+    } catch (e) {
+      return {'error': 'Registration failed: ${e.toString()}'};
     }
 
-    return null;
+    return {'error': 'Unknown error occurred during registration'};
   }
 }
