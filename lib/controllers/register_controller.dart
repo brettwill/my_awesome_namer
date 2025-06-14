@@ -14,14 +14,10 @@ class RegisterController {
 
   String? resolveTier(String code) {
     switch (code.trim()) {
-      case 'TIER1CODE':
-        return 'Basic';
-      case 'TIER2CODE':
-        return 'Premium';
       case 'TIER3CODE':
         return 'Admin';
       default:
-        return null;
+        return 'Basic';
     }
   }
 

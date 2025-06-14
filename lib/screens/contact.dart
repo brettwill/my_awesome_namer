@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/business/contactcontroller.dart';
 
-class KontaktPage extends StatefulWidget {
+class ContactPage extends StatefulWidget {
   @override
-  _KontaktPageState createState() => _KontaktPageState();
+  _ContactPageState createState() => _ContactPageState();
 }
 
-class _KontaktPageState extends State<KontaktPage> {
+class _ContactPageState extends State<ContactPage> {
   final _formKey = GlobalKey<FormState>();
-  String? _anrede;
-  String _vorname = '';
-  String _name = '';
+  String? _salutation;
+  String _firstName = '';
+  String _lastName = '';
   String _email = '';
-  String _telefonnummer = '';
+  String _phoneNumber = '';
   final ContactController controller = ContactController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Kontakt')),
+      appBar: AppBar(title: Text('Contact')),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Form(
@@ -26,70 +27,69 @@ class _KontaktPageState extends State<KontaktPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Mit * gekennzeichnete Felder sind Pflichtfelder.\nWir freuen uns auf Ihre Kontaktaufnahme.',
+                'Fields marked with * are required.\nWe look forward to hearing from you.',
               ),
               SizedBox(height: 20),
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: 'Anrede*'),
-                value: _anrede,
-                items: ['Frau', 'Herr']
+                decoration: InputDecoration(labelText: 'Title*'),
+                value: _salutation,
+                items: ['Ms.', 'Mr.']
                     .map(
                       (label) =>
                           DropdownMenuItem(value: label, child: Text(label)),
                     )
                     .toList(),
-                onChanged: (value) => setState(() => _anrede = value),
+                onChanged: (value) => setState(() => _salutation = value),
                 validator: (value) =>
-                    value == null ? 'Bitte Anrede auswählen' : null,
+                    value == null ? 'Please select a Title' : null,
               ),
               SizedBox(height: 16),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Vorname*'),
-                onChanged: (value) => _vorname = value,
+                decoration: InputDecoration(labelText: 'First Name*'),
+                onChanged: (value) => _firstName = value,
                 validator: (value) =>
-                    value!.isEmpty ? 'Vorname ist erforderlich' : null,
+                    value!.isEmpty ? 'First name is required' : null,
               ),
               SizedBox(height: 16),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Name*'),
-                onChanged: (value) => _name = value,
+                decoration: InputDecoration(labelText: 'Last Name*'),
+                onChanged: (value) => _lastName = value,
                 validator: (value) =>
-                    value!.isEmpty ? 'Name ist erforderlich' : null,
+                    value!.isEmpty ? 'Last name is required' : null,
               ),
               SizedBox(height: 16),
               TextFormField(
-                decoration: InputDecoration(labelText: 'E-Mail*'),
+                decoration: InputDecoration(labelText: 'Email*'),
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) => _email = value,
                 validator: (value) =>
-                    value!.isEmpty ? 'E-Mail ist erforderlich' : null,
+                    value!.isEmpty ? 'Email is required' : null,
               ),
               SizedBox(height: 16),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Telefonnummer*'),
+                decoration: InputDecoration(labelText: 'Phone Number*'),
                 keyboardType: TextInputType.phone,
-                onChanged: (value) => _telefonnummer = value,
+                onChanged: (value) => _phoneNumber = value,
                 validator: (value) =>
-                    value!.isEmpty ? 'Telefonnummer ist erforderlich' : null,
+                    value!.isEmpty ? 'Phone number is required' : null,
               ),
               SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    // Submit logic here
                     controller.submitContactForm(
-                      anrede: _anrede!,
-                      vorname: _vorname,
-                      name: _name,
+                      anrede: _salutation!,
+                      vorname: _firstName,
+                      name: _lastName,
                       email: _email,
-                      telefonnummer: _telefonnummer,
+                      telefonnummer: _phoneNumber,
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Formular erfolgreich gesendet!')),
+                      SnackBar(content: Text('Form submitted successfully!')),
                     );
                   }
                 },
-                child: Text('Absenden'),
+                child: Text('Submit'),
               ),
             ],
           ),

@@ -100,13 +100,18 @@ class MainHomePage extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          DrawerHeader(
-            decoration: BoxDecoration(color: Colors.green),
-            child: Text(
-              'Navigation',
-              style: TextStyle(color: Colors.white, fontSize: 24),
+          Container(
+            color: const Color(0xFF1B5E20),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Navigation',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
             ),
           ),
+
           ListTile(
             title: Text('Home'),
             onTap: () {
@@ -119,64 +124,60 @@ class MainHomePage extends StatelessWidget {
             },
           ),
           ExpansionTile(
-            title: Text('Über uns'),
+            title: Text('The Dogs'),
             children: [
-              ListTile(title: Text('Geschichte'), onTap: () {}),
-              ListTile(title: Text('Unsere Mission'), onTap: () {}),
-              ListTile(title: Text('Team'), onTap: () {}),
+              ListTile(
+                title: Text('All Dogs'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DogListScreen()),
+                  );
+                },
+              ),
+              ListTile(
+                title: Text('Dogs Detail'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DogListScreenEx()),
+                  );
+                },
+              ),
+              if (userId != null && userId != '')
+                ListTile(
+                  title: Text('Select Your Dogs'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            UserDogManagerScreen(userId: userId),
+                      ),
+                    );
+                  },
+                ),
             ],
-          ),
-          ListTile(
-            title: Text('Dogs'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DogListScreen()),
-              );
-            },
-          ),
-          ListTile(
-            title: Text('DogsDetail'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DogListScreenEx()),
-              );
-            },
           ),
           ListTile(
             title: Text('Contact'),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => KontaktPage()),
+                MaterialPageRoute(builder: (context) => ContactPage()),
               );
             },
           ),
 
-          // ✅ Only show this if user is logged in
-          if (userId != null)
-            ListTile(
-              title: Text('Select Dogs'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UserDogManagerScreen(userId: userId),
-                  ),
-                );
-              },
-            ),
-
-          ListTile(
-            title: Text('Upload Dogs'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => UploadImageScreen()),
-              );
-            },
-          ),
+          // ListTile(
+          //   title: Text('Upload Dogs'),
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => UploadImageScreen()),
+          //     );
+          //   },
+          // ),
         ],
       ),
     );

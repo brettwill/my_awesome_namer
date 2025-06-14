@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/business/user_provider.dart';
 import 'package:namer_app/models/dog_profile.dart';
-//import 'models/dog.dart'; // Your Dog model
 import '../business/dog_provider.dart'; // Your Provider
 import 'package:provider/provider.dart';
 

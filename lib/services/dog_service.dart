@@ -153,17 +153,11 @@ class DogService {
     // Determine tier from code
     String tier;
     switch (tierCode) {
-      case 'TIER1CODE':
-        tier = 'Basic';
-        break;
-      case 'TIER2CODE':
-        tier = 'Premium';
-        break;
       case 'TIER3CODE':
         tier = 'Admin';
         break;
       default:
-        return null; // Invalid code
+        tier = 'Basic'; // default
     }
 
     final isAdmin = tier == 'Admin';

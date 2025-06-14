@@ -24,7 +24,7 @@ class _MyLoginState extends State<MyLogin> {
 
     final result = await _controller.loginGetIdAdmin(username, password);
 
-    if (!mounted) return; // ✅ Prevent using context if widget is disposed
+    if (!mounted) return;
 
     if (result != null) {
       final userId = result['id'];
@@ -49,42 +49,96 @@ class _MyLoginState extends State<MyLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(80.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Welcome', style: Theme.of(context).textTheme.displayLarge),
-              TextFormField(
-                controller: _usernameController,
-                decoration: const InputDecoration(hintText: 'Username'),
+      appBar: AppBar(
+        leading: Navigator.of(context).canPop()
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            : null,
+        title: const Text('Login'),
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [const Color(0xFF1B5E20), Colors.green],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: const InputDecoration(hintText: 'Password'),
-                obscureText: true,
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _handleLogin,
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
-                child: const Text('ENTER'),
-              ),
-              TextButton(
-                onPressed: () {
-                  context.push('/register'); // Make sure this route exists
-                },
-                child: const Text('Register Now'),
-              ),
-
-              if (_errorMessage != null) ...[
-                const SizedBox(height: 16),
-                Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
-              ],
-            ],
+            ),
           ),
-        ),
+          Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              child: Card(
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.pets, size: 48, color: Colors.green),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Welcome Back 👋',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _usernameController,
+                        decoration: const InputDecoration(
+                          labelText: 'Username',
+                          prefixIcon: Icon(Icons.person),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      TextFormField(
+                        controller: _passwordController,
+                        decoration: const InputDecoration(
+                          labelText: 'Password',
+                          prefixIcon: Icon(Icons.lock),
+                        ),
+                        obscureText: true,
+                      ),
+                      const SizedBox(height: 24),
+                      ElevatedButton.icon(
+                        onPressed: _handleLogin,
+                        icon: const Icon(Icons.login),
+                        label: const Text('Login'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(
+                            0xFF1B5E20,
+                          ), // Dark green
+                          foregroundColor:
+                              Colors.white, // Ensures text/icon are white
+                          minimumSize: const Size.fromHeight(48),
+                        ),
+                      ),
+
+                      TextButton(
+                        onPressed: () => context.push('/register'),
+                        child: const Text('Don’t have an account? Register'),
+                      ),
+                      if (_errorMessage != null) ...[
+                        const SizedBox(height: 16),
+                        Text(
+                          _errorMessage!,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
