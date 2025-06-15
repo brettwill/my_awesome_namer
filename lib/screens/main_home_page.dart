@@ -81,17 +81,6 @@ class MainHomePage extends StatelessWidget {
     );
   }
 
-  Widget buildSocialMediaBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(icon: Icon(Icons.facebook), onPressed: () {}),
-        IconButton(icon: Icon(Icons.camera_alt), onPressed: () {}),
-        IconButton(icon: Icon(Icons.play_circle_fill), onPressed: () {}),
-      ],
-    );
-  }
-
   Drawer buildNavigationDrawer(BuildContext context) {
     final userId = Provider.of<UserProvider>(context).userId;
 
@@ -167,16 +156,6 @@ class MainHomePage extends StatelessWidget {
               );
             },
           ),
-
-          // ListTile(
-          //   title: Text('Upload Dogs'),
-          //   onTap: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => UploadImageScreen()),
-          //     );
-          //   },
-          // ),
         ],
       ),
     );
@@ -241,7 +220,6 @@ class MainHomePage extends StatelessWidget {
               imageWidth: 300,
               imageHeight: 300,
             ),
-            buildSocialMediaBar(),
           ],
         ),
       ),
