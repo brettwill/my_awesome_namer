@@ -210,15 +210,62 @@ class MainHomePage extends StatelessWidget {
       ),
 
       drawer: buildNavigationDrawer(context),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Container(
+              height: 250,
+              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/placeholder.png'),
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.4),
+                    BlendMode.darken,
+                  ),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Welcome to Animal Happyend',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineMedium
+                        ?.copyWith(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Give a loving home to a dog in need',
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: buildSectionTitle('Our Dogs'),
+            ),
             buildImageLinkRow(
               context: context,
               assetPaths: imagePaths,
-              imageWidth: 300,
-              imageHeight: 300,
+              imageWidth: 200,
+              imageHeight: 200,
+            ),
+            const SizedBox(height: 24),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'At Animal Happyend we rescue abandoned dogs and find them new families. Explore our site and discover your new best friend.',
+                style: TextStyle(fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
             ),
           ],
         ),
