@@ -2,6 +2,7 @@
 
 import 'package:go_router/go_router.dart';
 import 'package:namer_app/screens/main_home_page.dart';
+import 'package:namer_app/screens/home_page.dart';
 import 'package:namer_app/screens/login_screen.dart';
 import 'package:namer_app/screens/register_screen.dart';
 
@@ -12,7 +13,7 @@ GoRouter router() {
       GoRoute(path: '/login', builder: (context, state) => const MyLogin()),
       GoRoute(
         path: '/',
-        builder: (context, state) => const MainHomePage(userName: ''),
+        builder: (context, state) => const HomePage(userName: ''),
       ),
       GoRoute(
         path: '/register',
@@ -23,7 +24,7 @@ GoRouter router() {
         path: '/home/:username',
         builder: (context, state) {
           final username = state.pathParameters['username']!;
-          return MainHomePage(userName: username);
+          return HomePage(userName: username);
         },
       ),
     ],
