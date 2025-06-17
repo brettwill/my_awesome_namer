@@ -221,6 +221,50 @@ class MainHomePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.search),
+                        tooltip: 'Search',
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DogListScreenEx()),
+                          );
+                        },
+                      ),
+                      Consumer<UserProvider>(
+                        builder: (context, provider, _) {
+                          if (provider.userId == null) {
+                            return IconButton(
+                              icon: const Icon(Icons.login),
+                              tooltip: 'Login',
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MyLogin()),
+                                );
+                              },
+                            );
+                          } else {
+                            return IconButton(
+                              icon: const Icon(Icons.logout),
+                              tooltip: 'Logout',
+                              onPressed: () {
+                                provider.clearUser();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Logged out')));
+                              },
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
                   SizedBox(
                     height: 250,
                     child: Image.asset(
