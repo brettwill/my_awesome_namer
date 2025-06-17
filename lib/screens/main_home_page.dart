@@ -12,7 +12,7 @@ class MainHomePage extends StatelessWidget {
   static const List<String> imagePaths = [
     'assets/images/Cosma.png',
     'assets/images/Bella.png',
-    'assets/images/MAX.png',
+    'assets/images/Max.png',
     'assets/images/bullterrier.png',
     'assets/images/brutus.png',
   ];
@@ -36,51 +36,48 @@ class MainHomePage extends StatelessWidget {
     );
   }
 
-  Widget buildImageGrid(
-      {required BuildContext context,
-      required List<String> assetPaths,
-      required double maxWidth}) {
-    int crossAxisCount = (maxWidth / 200).floor();
-    crossAxisCount = crossAxisCount.clamp(2, 4);
-
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-        childAspectRatio: 1,
+  Widget buildImageLinkRow({
+    required BuildContext context,
+    required List<String> assetPaths,
+    double imageWidth = 150,
+    double imageHeight = 150,
+  }) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: assetPaths.map((path) {
+          return GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Image Tapped'),
+                    content: Text('You tapped on ${path.split('/').last}'),
+                    actions: [
+                      TextButton(
+                        child: Text('Close'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Image.asset(
+                path,
+                width: imageWidth,
+                height: imageHeight,
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        }).toList(),
       ),
-      itemCount: assetPaths.length,
-      itemBuilder: (context, index) {
-        final path = assetPaths[index];
-        return GestureDetector(
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Image Tapped'),
-                  content: Text('You tapped on ${path.split('/').last}'),
-                  actions: [
-                    TextButton(
-                      child: const Text('Close'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          child: Image.asset(
-            path,
-            fit: BoxFit.cover,
-          ),
-        );
-      },
     );
   }
 
@@ -213,83 +210,18 @@ class MainHomePage extends StatelessWidget {
       ),
 
       drawer: buildNavigationDrawer(context),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.search),
-                        tooltip: 'Search',
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DogListScreenEx()),
-                          );
-                        },
-                      ),
-                      Consumer<UserProvider>(
-                        builder: (context, provider, _) {
-                          if (provider.userId == null) {
-                            return IconButton(
-                              icon: const Icon(Icons.login),
-                              tooltip: 'Login',
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MyLogin()),
-                                );
-                              },
-                            );
-                          } else {
-                            return IconButton(
-                              icon: const Icon(Icons.logout),
-                              tooltip: 'Logout',
-                              onPressed: () {
-                                provider.clearUser();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Logged out')));
-                              },
-                            );
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    height: 250,
-                    child: Image.asset(
-                      'assets/images/placeholder.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Find your perfect companion',
-                    textAlign: TextAlign.center,
-                    style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  buildImageGrid(
-                    context: context,
-                    assetPaths: imagePaths,
-                    maxWidth: constraints.maxWidth,
-                  ),
-                ],
-              ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            buildImageLinkRow(
+              context: context,
+              assetPaths: imagePaths,
+              imageWidth: 300,
+              imageHeight: 300,
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }
