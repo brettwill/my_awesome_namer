@@ -83,10 +83,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               decoration: const InputDecoration(labelText: 'Confirm Password'),
               obscureText: true,
             ),
-            TextField(
-              controller: _codeController,
-              decoration: const InputDecoration(labelText: 'Registration Code'),
-            ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _handleRegister,
