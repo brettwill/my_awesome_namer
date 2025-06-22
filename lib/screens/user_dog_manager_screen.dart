@@ -62,7 +62,7 @@ class _UserDogManagerScreenState
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: Builder(
           builder: (context) => AppBar(
-            title: const Text('Manage Dogs'),
+            title: const Text('Dog Selection Page'),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               tooltip: 'Back',

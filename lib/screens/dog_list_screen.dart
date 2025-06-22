@@ -7,12 +7,12 @@ import 'package:namer_app/widgets/dog_list_item.dart';
 import 'package:provider/provider.dart';
 import 'package:namer_app/business/user_provider.dart';
 
-class DogListScreenEx extends StatefulWidget {
+class DogAdminstration extends StatefulWidget {
   @override
-  _DogListScreenExState createState() => _DogListScreenExState();
+  _DogAdminstrationState createState() => _DogAdminstrationState();
 }
 
-class _DogListScreenExState extends State<DogListScreenEx> {
+class _DogAdminstrationState extends State<DogAdminstration> {
   final DogService _dogService = DogService();
   List<DogProfile> _dogs = [];
   List<String> _breedOptions = [];
@@ -49,7 +49,7 @@ class _DogListScreenExState extends State<DogListScreenEx> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Dog Browser')),
+      appBar: AppBar(title: Text('Administration')),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(

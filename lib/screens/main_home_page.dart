@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/business/user_provider.dart';
 import 'package:namer_app/screens/AboutUs.dart';
-import 'package:namer_app/screens/contact.dart';
+import 'package:namer_app/screens/adoption_process_screen.dart';
 import 'package:namer_app/screens/dog_list_screen.dart';
-import 'package:namer_app/screens/doglist.dart';
 import 'package:namer_app/screens/favorites_screen.dart';
 import 'package:namer_app/screens/login_screen.dart';
 import 'package:namer_app/screens/user_dog_manager_screen.dart';
@@ -15,7 +14,10 @@ class MainHomePage extends StatelessWidget {
   const MainHomePage({super.key, required this.userName});
 
   Drawer buildNavigationDrawer(BuildContext context) {
-    final userId = Provider.of<UserProvider>(context).userId;
+    final userId =
+        Provider.of<UserProvider>(context).userId ??
+        "00000000-0000-0000-0000-000000000000";
+    final isAdmin = Provider.of<UserProvider>(context).isAdmin;
 
     return Drawer(
       child: ListView(
@@ -47,7 +49,18 @@ class MainHomePage extends StatelessWidget {
               );
             },
           ),
-          ExpansionTile(
+          ListTile(
+            title: const Text('All Dogs'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserDogManagerScreen(userId: userId),
+                ),
+              );
+            },
+          ),
+          /*ExpansionTile(
             title: const Text('The Dogs'),
             children: [
               ListTile(
@@ -64,7 +77,7 @@ class MainHomePage extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DogListScreenEx()),
+                    MaterialPageRoute(builder: (context) => DogAdminstration()),
                   );
                 },
               ),
@@ -82,17 +95,19 @@ class MainHomePage extends StatelessWidget {
                   },
                 ),
             ],
-          ),
+          ),*/
           ListTile(
             title: const Text('Adoption Process'),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AboutPage()),
+                MaterialPageRoute(
+                  builder: (context) => AdoptionProcessScreen(),
+                ),
               );
             },
           ),
-          if (userId != null && userId != '')
+          if (userId != "00000000-0000-0000-0000-000000000000")
             ListTile(
               title: const Text('My Favourites'),
               onTap: () {
@@ -103,6 +118,23 @@ class MainHomePage extends StatelessWidget {
                   ),
                 );
               },
+            ),
+          if (userId != '00000000-0000-0000-0000-000000000000' && isAdmin)
+            ExpansionTile(
+              title: const Text('Administraion'),
+              children: [
+                ListTile(
+                  title: const Text('Dog Workbench'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DogAdminstration(),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
         ],
       ),
@@ -134,9 +166,14 @@ class MainHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-
+    final userId =
+        userProvider.userId ?? "00000000-0000-0000-0000-000000000000";
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(
+          0xFF1B5E20,
+        ), // This sets the AppBar color to green
+        foregroundColor: Color(0xFFFFFFFF),
         title: Row(
           children: [
             const Icon(Icons.pets),
@@ -151,7 +188,9 @@ class MainHomePage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => DogListScreenEx()),
+                MaterialPageRoute(
+                  builder: (context) => UserDogManagerScreen(userId: userId),
+                ),
               );
             },
           ),
@@ -187,7 +226,10 @@ class MainHomePage extends StatelessWidget {
             SizedBox(
               height: 250,
               width: double.infinity,
-              child: Image.asset('assets/images/cosma.png', fit: BoxFit.fill),
+              child: Image.asset(
+                'assets/images/main_page.png',
+                fit: BoxFit.fill,
+              ),
             ),
             const SizedBox(height: 20),
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/screens/base_dog_screen.dart';
-
+import 'base_dog_screen.dart';
 import '../models/dog_profile.dart';
 
 class FavouritesScreen extends BaseDogScreen {
@@ -47,10 +46,16 @@ class _FavouritesScreenState extends BaseDogScreenState<FavouritesScreen> {
     return buildScreenScaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
-        child: Builder(
-          builder: (context) => AppBar(title: const Text('Favourites')),
+        child: AppBar(
+          title: const Text('Favourites'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            tooltip: 'Back',
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         ),
       ),
+
       body: FutureBuilder<List<DogProfile>>(
         future: userDogsFuture,
         builder: (context, snapshot) {

@@ -55,6 +55,7 @@ abstract class BaseDogScreenState<T extends BaseDogScreen> extends State<T> {
   }
 
   Future<void> assignDogToUser(String dogId) async {
+    if (widget.userId == "00000000-0000-0000-0000-000000000000") return;
     await _controller.assignDog(widget.userId, dogId);
     setState(() {
       _userDogsFuture = _controller.getUserDogs(widget.userId);
@@ -63,6 +64,7 @@ abstract class BaseDogScreenState<T extends BaseDogScreen> extends State<T> {
 
   /// NEW: Remove dog from user helper
   Future<void> removeDogFromUser(String dogId) async {
+    if (widget.userId == "00000000-0000-0000-0000-000000000000") return;
     await _controller.removeDog(widget.userId, dogId);
     setState(() {
       _userDogsFuture = _controller.getUserDogs(widget.userId);
@@ -87,9 +89,9 @@ abstract class BaseDogScreenState<T extends BaseDogScreen> extends State<T> {
   };
   List<String> _breedOptions = [];
 
-  void _onFiltersChanged() {
-    setState(() {});
-  }
+  // void _onFiltersChanged() {
+  //   setState(() {});
+  // }
 
   List<DogProfile> applyFilters(List<DogProfile> dogs) {
     return dogs.where((d) {
