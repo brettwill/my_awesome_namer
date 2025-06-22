@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/business/user_provider.dart';
-import 'package:namer_app/screens/AboutUs.dart';
+import 'package:namer_app/screens/about_us.dart';
 import 'package:namer_app/screens/adoption_process_screen.dart';
 import 'package:namer_app/screens/dog_list_screen.dart';
 import 'package:namer_app/screens/favorites_screen.dart';
@@ -16,9 +16,7 @@ class MainHomePage extends StatelessWidget {
   const MainHomePage({super.key, required this.userName});
 
   Drawer buildNavigationDrawer(BuildContext context) {
-    final userId =
-        Provider.of<UserProvider>(context).userId ??
-        nullGuid;
+    final userId = Provider.of<UserProvider>(context).userId ?? nullGuid;
     final isAdmin = Provider.of<UserProvider>(context).isAdmin;
 
     return Drawer(
@@ -175,8 +173,7 @@ class MainHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    final userId =
-        userProvider.userId ?? nullGuid;
+    final userId = userProvider.userId ?? nullGuid;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(
@@ -205,9 +202,11 @@ class MainHomePage extends StatelessWidget {
           ),
           Consumer<ThemeProvider>(
             builder: (context, themeProvider, _) => IconButton(
-              icon: Icon(themeProvider.themeMode == ThemeMode.dark
-                  ? Icons.light_mode
-                  : Icons.dark_mode),
+              icon: Icon(
+                themeProvider.themeMode == ThemeMode.dark
+                    ? Icons.light_mode
+                    : Icons.dark_mode,
+              ),
               tooltip: 'Toggle Theme',
               onPressed: () {
                 themeProvider.toggleTheme();
