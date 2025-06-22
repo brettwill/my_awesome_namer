@@ -7,6 +7,7 @@ import 'package:namer_app/screens/favorites_screen.dart';
 import 'package:namer_app/screens/login_screen.dart';
 import 'package:namer_app/screens/user_dog_manager_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:namer_app/common/constants.dart';
 
 class MainHomePage extends StatelessWidget {
   final String userName;
@@ -16,7 +17,7 @@ class MainHomePage extends StatelessWidget {
   Drawer buildNavigationDrawer(BuildContext context) {
     final userId =
         Provider.of<UserProvider>(context).userId ??
-        "00000000-0000-0000-0000-000000000000";
+        nullGuid;
     final isAdmin = Provider.of<UserProvider>(context).isAdmin;
 
     return Drawer(
@@ -107,7 +108,7 @@ class MainHomePage extends StatelessWidget {
               );
             },
           ),
-          if (userId != "00000000-0000-0000-0000-000000000000")
+          if (userId != nullGuid)
             ListTile(
               title: const Text('My Favourites'),
               onTap: () {
@@ -119,7 +120,7 @@ class MainHomePage extends StatelessWidget {
                 );
               },
             ),
-          if (userId != '00000000-0000-0000-0000-000000000000' && isAdmin)
+          if (userId != nullGuid && isAdmin)
             ExpansionTile(
               title: const Text('Administraion'),
               children: [
@@ -167,7 +168,7 @@ class MainHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final userId =
-        userProvider.userId ?? "00000000-0000-0000-0000-000000000000";
+        userProvider.userId ?? nullGuid;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(

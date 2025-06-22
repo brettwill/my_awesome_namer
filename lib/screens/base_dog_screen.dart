@@ -3,6 +3,7 @@ import '../controllers/dog_controller.dart';
 import '../models/dog_profile.dart';
 import '../helpers/dog_profile_card.dart';
 import 'package:namer_app/widgets/dog_filter_tile.dart'; // filter UI
+import 'package:namer_app/common/constants.dart';
 
 abstract class BaseDogScreen extends StatefulWidget {
   final String userId;
@@ -55,7 +56,7 @@ abstract class BaseDogScreenState<T extends BaseDogScreen> extends State<T> {
   }
 
   Future<void> assignDogToUser(String dogId) async {
-    if (widget.userId == "00000000-0000-0000-0000-000000000000") return;
+    if (widget.userId == nullGuid) return;
     await _controller.assignDog(widget.userId, dogId);
     setState(() {
       _userDogsFuture = _controller.getUserDogs(widget.userId);
@@ -64,7 +65,7 @@ abstract class BaseDogScreenState<T extends BaseDogScreen> extends State<T> {
 
   /// NEW: Remove dog from user helper
   Future<void> removeDogFromUser(String dogId) async {
-    if (widget.userId == "00000000-0000-0000-0000-000000000000") return;
+    if (widget.userId == nullGuid) return;
     await _controller.removeDog(widget.userId, dogId);
     setState(() {
       _userDogsFuture = _controller.getUserDogs(widget.userId);
@@ -139,7 +140,17 @@ abstract class BaseDogScreenState<T extends BaseDogScreen> extends State<T> {
       height: dog.height,
       location: dog.location,
       isSelected: isSelected,
-      onTap: () => onDogCardTapped(dog.id, isSelected, dog.name),
+      onTap: () {
+        if (widget.userId == nullGuid) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Login if you want to select favourites'),
+            ),
+          );
+          return;
+        }
+        onDogCardTapped(dog.id, isSelected, dog.name);
+      },
     );
   }
 }
