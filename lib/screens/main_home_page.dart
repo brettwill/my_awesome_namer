@@ -8,6 +8,7 @@ import 'package:namer_app/screens/login_screen.dart';
 import 'package:namer_app/screens/user_dog_manager_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:namer_app/common/constants.dart';
+import 'package:namer_app/business/theme_provider.dart';
 
 class MainHomePage extends StatelessWidget {
   final String userName;
@@ -194,6 +195,17 @@ class MainHomePage extends StatelessWidget {
                 ),
               );
             },
+          ),
+          Consumer<ThemeProvider>(
+            builder: (context, themeProvider, _) => IconButton(
+              icon: Icon(themeProvider.themeMode == ThemeMode.dark
+                  ? Icons.light_mode
+                  : Icons.dark_mode),
+              tooltip: 'Toggle Theme',
+              onPressed: () {
+                themeProvider.toggleTheme();
+              },
+            ),
           ),
           if (userProvider.userId == null)
             IconButton(
