@@ -18,6 +18,7 @@ abstract class BaseDogScreenState<T extends BaseDogScreen> extends State<T> {
     super.initState();
     _allDogsFuture = _controller.getAllDogs();
     _userDogsFuture = _controller.getUserDogs(widget.userId);
+    _loadBreeds();
   }
 
   Future<List<DogProfile>> get userDogsFuture => _userDogsFuture;
@@ -72,6 +73,13 @@ abstract class BaseDogScreenState<T extends BaseDogScreen> extends State<T> {
     });
   }
 
+  void _loadBreeds() async {
+    final breeds = await _controller.getBreeds();
+    setState(() {
+      _breedOptions = breeds;
+    });
+  }
+
   Future<Map<String, List<DogProfile>>> loadCombinedData() async {
     final allDogs = await _allDogsFuture;
     final userDogs = await _userDogsFuture;
@@ -96,9 +104,11 @@ abstract class BaseDogScreenState<T extends BaseDogScreen> extends State<T> {
 
   List<DogProfile> applyFilters(List<DogProfile> dogs) {
     return dogs.where((d) {
-      if (_filters['breed']!.isNotEmpty && d.breed != _filters['breed'])
+      if (_filters['breed']!.isNotEmpty &&
+          d.breed.toLowerCase() != _filters['breed']!.toLowerCase())
         return false;
-      if (_filters['gender']!.isNotEmpty && d.gender != _filters['gender'])
+      if (_filters['gender']!.isNotEmpty &&
+          d.gender.toLowerCase() != _filters['gender']!.toLowerCase())
         return false;
 
       if (_filters['age']!.isNotEmpty) {

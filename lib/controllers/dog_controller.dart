@@ -14,4 +14,7 @@ class DogController {
 
   Future<void> removeDog(String userId, String dogId) =>
       _dogService.removeDogFromUser(userId, dogId);
+
+  /// Expose list of available breeds for UI filters
+  Future<List<String>> getBreeds() => _dogService.fetchBreeds();
 }
