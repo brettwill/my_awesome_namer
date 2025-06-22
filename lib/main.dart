@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/business/dog_provider.dart' show DogProvider;
 import 'package:namer_app/business/user_provider.dart';
+import 'package:namer_app/business/theme_provider.dart';
 import 'package:namer_app/screens/dog_human_match_app.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +26,7 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => DogProvider()..loadDogs()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
         // Add more providers here if needed
       ],
       child: DogHumanMatchApp(), // ✅ This includes all routes/screens

@@ -8,6 +8,7 @@ import 'package:namer_app/screens/login_screen.dart';
 import 'package:namer_app/screens/user_dog_manager_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:namer_app/common/constants.dart';
+import '../business/theme_provider.dart';
 
 class MainHomePage extends StatelessWidget {
   final String userName;
@@ -167,8 +168,8 @@ class MainHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    final userId =
-        userProvider.userId ?? nullGuid;
+    final userId = userProvider.userId ?? nullGuid;
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(
@@ -193,6 +194,15 @@ class MainHomePage extends StatelessWidget {
                   builder: (context) => UserDogManagerScreen(userId: userId),
                 ),
               );
+            },
+          ),
+          IconButton(
+            icon: Icon(themeProvider.themeMode == ThemeMode.dark
+                ? Icons.light_mode
+                : Icons.dark_mode),
+            tooltip: 'Toggle Theme',
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
             },
           ),
           if (userProvider.userId == null)
