@@ -57,7 +57,7 @@ class _DogFormState extends State<DogForm> {
     super.dispose();
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       final dog = DogProfile(
         id: widget.dog?.id ?? '', // Empty for insert
@@ -76,12 +76,14 @@ class _DogFormState extends State<DogForm> {
 
       final provider = Provider.of<DogProvider>(context, listen: false);
       if (widget.dog == null) {
-        provider.addDog(dog);
+        await provider.addDog(dog);
       } else {
-        provider.updateDog(dog);
+        await provider.updateDog(dog);
       }
 
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
+      }
     }
   }
 
