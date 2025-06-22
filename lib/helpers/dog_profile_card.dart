@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/helpers/safe_image.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DogProfileCard extends StatelessWidget {
   final String name;
@@ -14,10 +12,10 @@ class DogProfileCard extends StatelessWidget {
   final String height;
   final String location;
   final bool isSelected;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const DogProfileCard({
-    super.key,
+    Key? key,
     required this.name,
     required this.imageUrl,
     required this.profileUrl,
@@ -28,76 +26,62 @@ class DogProfileCard extends StatelessWidget {
     required this.weight,
     required this.height,
     required this.location,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  void _launchURL() async {
-    if (await canLaunch(profileUrl)) {
-      await launch(profileUrl);
-    }
-  }
+    this.isSelected = false,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Card(
-        color: isSelected ? Colors.lightBlue[50] : null,
-        margin: EdgeInsets.all(12),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Image on the left
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: SafeImage(imagePath: imageUrl, height: 120, width: 120),
-              ),
-
-              SizedBox(width: 16),
-              // Info on the right
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: _launchURL,
-                      child: Text(
-                        name,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    _infoRow(Icons.cake, "Birth Date: $birthDate"),
-                    _infoRow(Icons.access_time, "Age: $age"),
-                    _infoRow(Icons.pets, "Breed: $breed"),
-                    _infoRow(Icons.transgender, "Gender: $gender"),
-                    _infoRow(Icons.monitor_weight, "Weight: $weight"),
-                    _infoRow(Icons.height, "Height: $height"),
-                    _infoRow(Icons.home, "Location: $location"),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _infoRow(IconData icon, String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2.0),
-      child: Row(
+    return Card(
+      elevation: 2,
+      child: Stack(
         children: [
-          Icon(icon, size: 20),
-          SizedBox(width: 8),
-          Expanded(child: Text(text)),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    imageUrl,
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const Icon(Icons.pets),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 4),
+                      Text('Breed: $breed'),
+                      Text('Age: $age'),
+                      Text('Location: $location'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Favourite icon overlay
+          Positioned(
+            right: 4,
+            top: 4,
+            child: IconButton(
+              icon: Icon(
+                isSelected ? Icons.favorite : Icons.favorite_border,
+                color: Colors.red,
+              ),
+              onPressed: onTap,
+            ),
+          ),
         ],
       ),
     );

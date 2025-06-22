@@ -1,4 +1,3 @@
-// favourites_screen.dart
 import 'package:flutter/material.dart';
 import 'package:namer_app/screens/BaseDogScreen.dart';
 import '../models/dog_profile.dart';
@@ -16,36 +15,36 @@ class _FavouritesScreenState extends BaseDogScreenState<FavouritesScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Remove Favourite'),
-        content: Text(
-          'Are you sure you want to remove $dogName from favourites?',
-        ),
+        title: const Text('Remove favourite?'),
+        content: Text('Remove $dogName from favourites?'),
         actions: [
           TextButton(
-            child: const Text('Cancel'),
             onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
           ),
-          ElevatedButton(
-            child: const Text('Remove'),
+          TextButton(
             onPressed: () => Navigator.pop(context, true),
+            child: const Text('Remove'),
           ),
         ],
       ),
     );
 
-    if (confirmed == true) {
+    if (confirmed ?? false) {
       await removeDogFromUser(dogId);
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$dogName removed from favourites')),
-      );
+      setState(() {});
     }
+  }
+
+  @override
+  void onDogCardTapped(String dogId, bool isAssigned, String dogName) async {
+    _confirmAndRemove(dogId, dogName);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Your Favourite Dogs')),
+      appBar: AppBar(title: const Text('Favourites')),
       body: FutureBuilder<List<DogProfile>>(
         future: userDogsFuture,
         builder: (context, snapshot) {
@@ -62,22 +61,18 @@ class _FavouritesScreenState extends BaseDogScreenState<FavouritesScreen> {
             itemCount: dogs.length,
             itemBuilder: (context, index) {
               final dog = dogs[index];
-              return ListTile(
-                leading: dog.imageUrl.isNotEmpty
-                    ? Image.network(
-                        dog.imageUrl,
-                        width: 40,
-                        height: 40,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) =>
-                            const Icon(Icons.image_not_supported),
-                      )
-                    : const Icon(Icons.pets),
-                title: Text(dog.name),
-                trailing: IconButton(
-                  icon: const Icon(Icons.favorite, color: Colors.red),
-                  onPressed: () => _confirmAndRemove(dog.id, dog.name),
-                ),
+              return Stack(
+                children: [
+                  buildDogProfileCard(dog),
+                  Positioned(
+                    right: 16,
+                    top: 16,
+                    child: IconButton(
+                      icon: const Icon(Icons.favorite, color: Colors.red),
+                      onPressed: () => _confirmAndRemove(dog.id, dog.name),
+                    ),
+                  ),
+                ],
               );
             },
           );

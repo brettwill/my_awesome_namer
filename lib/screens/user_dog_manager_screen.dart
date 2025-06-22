@@ -1,4 +1,3 @@
-// user_dog_manager_screen.dart
 import 'package:flutter/material.dart';
 import 'package:namer_app/screens/BaseDogScreen.dart';
 import '../models/dog_profile.dart';
@@ -13,43 +12,57 @@ class UserDogManagerScreen extends BaseDogScreen {
 
 class _UserDogManagerScreenState
     extends BaseDogScreenState<UserDogManagerScreen> {
+  late List<DogProfile> _allDogs;
   Set<String> _userDogIds = {};
   bool _initialized = false;
 
-  void _toggleDogAssignment(DogProfile dog, bool isAssigned) async {
-    setState(() {
-      if (isAssigned) {
-        _userDogIds.add(dog.id);
-      } else {
-        _userDogIds.remove(dog.id);
-      }
-    });
+  Future<List<DogProfile>> get allDogsFuture async =>
+      (await loadCombinedData())['allDogs']!;
 
-    if (isAssigned) {
+  void _toggleDogAssignment(DogProfile dog, bool assign) async {
+    if (assign) {
       await assignDogToUser(dog.id);
-      _showSnackBar('${dog.name} assigned to user.');
+      _userDogIds.add(dog.id);
     } else {
       await removeDogFromUser(dog.id);
-      _showSnackBar('${dog.name} removed from user.');
+      _userDogIds.remove(dog.id);
+    }
+    setState(() {});
+  }
+
+  @override
+  void onDogCardTapped(String dogId, bool isAssigned, String dogName) {
+    final assign = !isAssigned;
+    final dog = _findDogById(dogId);
+    if (dog != null) {
+      _toggleDogAssignment(dog, assign);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            assign
+                ? '${dog.name} assigned to user.'
+                : '${dog.name} removed from user.',
+          ),
+          duration: const Duration(seconds: 2),
+        ),
+      );
     }
   }
 
-  void _showSnackBar(String message) {
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
-    );
+  DogProfile? _findDogById(String id) {
+    // Searches allDogs for a matching id
+    final index = _allDogs.indexWhere((dog) => dog.id == id);
+    return index != -1 ? _allDogs[index] : null;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Your Desired Dogs'),
+        title: const Text('Manage Dogs'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.list),
-            tooltip: 'View Selected Dogs',
+            icon: const Icon(Icons.checklist),
             onPressed: _showSelectedDogsDialog,
           ),
         ],
@@ -62,6 +75,7 @@ class _UserDogManagerScreenState
           }
 
           final allDogs = snapshot.data!['allDogs']!;
+          _allDogs = allDogs;
           final userDogs = snapshot.data!['userDogs']!;
 
           if (!_initialized) {
@@ -75,28 +89,10 @@ class _UserDogManagerScreenState
               final dog = allDogs[index];
               final isAssigned = _userDogIds.contains(dog.id);
 
-              return CheckboxListTile(
-                title: Row(
-                  children: [
-                    if (dog.imageUrl.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Image.network(
-                          dog.imageUrl,
-                          width: 40,
-                          height: 40,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) =>
-                              const Icon(Icons.image_not_supported),
-                        ),
-                      ),
-                    Expanded(child: Text(dog.name)),
-                  ],
-                ),
-                value: isAssigned,
-                onChanged: (val) {
-                  if (val != null) _toggleDogAssignment(dog, val);
-                },
+              return buildDogProfileCard(
+                dog,
+                isSelected:
+                    isAssigned, // used only for icon state, not card background
               );
             },
           );
