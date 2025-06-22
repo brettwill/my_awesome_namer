@@ -37,12 +37,14 @@ class MainHomePage extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: const Icon(Icons.home),
             title: const Text('Home'),
             onTap: () {
               Navigator.pop(context);
             },
           ),
           ListTile(
+            leading: const Icon(Icons.info_outline),
             title: const Text('About Us'),
             onTap: () {
               Navigator.push(
@@ -52,6 +54,7 @@ class MainHomePage extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.pets),
             title: const Text('All Dogs'),
             onTap: () {
               Navigator.push(
@@ -99,6 +102,7 @@ class MainHomePage extends StatelessWidget {
             ],
           ),*/
           ListTile(
+            leading: const Icon(Icons.assignment),
             title: const Text('Adoption Process'),
             onTap: () {
               Navigator.push(
@@ -111,6 +115,7 @@ class MainHomePage extends StatelessWidget {
           ),
           if (userId != nullGuid)
             ListTile(
+              leading: const Icon(Icons.favorite),
               title: const Text('My Favourites'),
               onTap: () {
                 Navigator.push(
@@ -123,9 +128,11 @@ class MainHomePage extends StatelessWidget {
             ),
           if (userId != nullGuid && isAdmin)
             ExpansionTile(
+              leading: const Icon(Icons.admin_panel_settings),
               title: const Text('Administraion'),
               children: [
                 ListTile(
+                  leading: const Icon(Icons.build),
                   title: const Text('Dog Workbench'),
                   onTap: () {
                     Navigator.push(
