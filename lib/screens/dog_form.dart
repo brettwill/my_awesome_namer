@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:namer_app/business/user_provider.dart';
 import 'package:namer_app/models/dog_profile.dart';
 import '../business/dog_provider.dart'; // Your Provider
+import '../controllers/dog_controller.dart';
 import 'package:provider/provider.dart';
 
 class DogForm extends StatefulWidget {
@@ -15,6 +16,9 @@ class DogForm extends StatefulWidget {
 
 class _DogFormState extends State<DogForm> {
   final _formKey = GlobalKey<FormState>();
+  final DogController _dogController = DogController();
+  List<String> _breedOptions = [];
+  final List<String> _genderOptions = ['Male', 'Female'];
   late TextEditingController nameController;
   late TextEditingController imageUrlController;
   late TextEditingController profileUrlController;
@@ -40,6 +44,14 @@ class _DogFormState extends State<DogForm> {
     weightController = TextEditingController(text: dog?.weight ?? '');
     heightController = TextEditingController(text: dog?.height ?? '');
     locationController = TextEditingController(text: dog?.location ?? '');
+    _loadBreeds();
+  }
+
+  void _loadBreeds() async {
+    final breeds = await _dogController.getBreeds();
+    setState(() {
+      _breedOptions = breeds;
+    });
   }
 
   @override
@@ -103,6 +115,32 @@ class _DogFormState extends State<DogForm> {
     );
   }
 
+  Widget _buildDropdownField(
+    String label,
+    TextEditingController controller,
+    List<String> options, {
+    bool required = false,
+    bool readOnly = false,
+  }) {
+    return DropdownButtonFormField<String>(
+      decoration: InputDecoration(labelText: label),
+      value: controller.text.isEmpty ? null : controller.text,
+      items: options
+          .map((opt) => DropdownMenuItem(value: opt, child: Text(opt)))
+          .toList(),
+      onChanged: readOnly
+          ? null
+          : (value) {
+              setState(() {
+                controller.text = value ?? '';
+              });
+            },
+      validator: required && !readOnly
+          ? (value) => value == null || value.isEmpty ? 'Required' : null
+          : null,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isAdmin = Provider.of<UserProvider>(context).isAdmin;
@@ -138,8 +176,18 @@ class _DogFormState extends State<DogForm> {
                 required: true,
                 readOnly: !isAdmin,
               ),
-              _buildTextField('Breed', breedController, readOnly: !isAdmin),
-              _buildTextField('Gender', genderController, readOnly: !isAdmin),
+              _buildDropdownField(
+                'Breed',
+                breedController,
+                _breedOptions,
+                readOnly: !isAdmin,
+              ),
+              _buildDropdownField(
+                'Gender',
+                genderController,
+                _genderOptions,
+                readOnly: !isAdmin,
+              ),
               _buildTextField(
                 'Birth Date',
                 birthDateController,
