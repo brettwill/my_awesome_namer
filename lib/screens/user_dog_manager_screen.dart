@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/screens/BaseDogScreen.dart';
+import 'base_dog_screen.dart';
 import '../models/dog_profile.dart';
 
 class UserDogManagerScreen extends BaseDogScreen {
@@ -57,15 +57,25 @@ class _UserDogManagerScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Manage Dogs'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.checklist),
-            onPressed: _showSelectedDogsDialog,
+    return buildScreenScaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: Builder(
+          builder: (context) => AppBar(
+            title: const Text('Manage Dogs'),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              tooltip: 'Back',
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.checklist),
+                onPressed: _showSelectedDogsDialog,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
       body: FutureBuilder<Map<String, List<DogProfile>>>(
         future: loadCombinedData(),
@@ -77,6 +87,7 @@ class _UserDogManagerScreenState
           final allDogs = snapshot.data!['allDogs']!;
           _allDogs = allDogs;
           final userDogs = snapshot.data!['userDogs']!;
+          final displayDogs = applyFilters(allDogs);
 
           if (!_initialized) {
             _userDogIds = userDogs.map((d) => d.id).toSet();
@@ -84,9 +95,9 @@ class _UserDogManagerScreenState
           }
 
           return ListView.builder(
-            itemCount: allDogs.length,
+            itemCount: displayDogs.length,
             itemBuilder: (context, index) {
-              final dog = allDogs[index];
+              final dog = displayDogs[index];
               final isAssigned = _userDogIds.contains(dog.id);
 
               return buildDogProfileCard(
