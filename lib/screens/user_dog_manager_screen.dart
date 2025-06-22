@@ -1,33 +1,20 @@
+// user_dog_manager_screen.dart
 import 'package:flutter/material.dart';
-import '../controllers/dog_controller.dart';
+import 'package:namer_app/screens/BaseDogScreen.dart';
 import '../models/dog_profile.dart';
 
-class UserDogManagerScreen extends StatefulWidget {
-  final String userId;
-
-  const UserDogManagerScreen({required this.userId, super.key});
+class UserDogManagerScreen extends BaseDogScreen {
+  const UserDogManagerScreen({Key? key, required String userId})
+    : super(key: key, userId: userId);
 
   @override
-  State<UserDogManagerScreen> createState() => _UserDogManagerScreenState();
+  _UserDogManagerScreenState createState() => _UserDogManagerScreenState();
 }
 
-class _UserDogManagerScreenState extends State<UserDogManagerScreen> {
-  final DogController _controller = DogController();
-  late Future<List<DogProfile>> _allDogsFuture;
-  late Future<List<DogProfile>> _userDogsFuture;
+class _UserDogManagerScreenState
+    extends BaseDogScreenState<UserDogManagerScreen> {
   Set<String> _userDogIds = {};
   bool _initialized = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadData();
-  }
-
-  void _loadData() {
-    _allDogsFuture = _controller.getAllDogs();
-    _userDogsFuture = _controller.getUserDogs(widget.userId);
-  }
 
   void _toggleDogAssignment(DogProfile dog, bool isAssigned) async {
     setState(() {
@@ -39,15 +26,16 @@ class _UserDogManagerScreenState extends State<UserDogManagerScreen> {
     });
 
     if (isAssigned) {
-      await _controller.assignDog(widget.userId, dog.id);
+      await assignDogToUser(dog.id);
       _showSnackBar('${dog.name} assigned to user.');
     } else {
-      await _controller.removeDog(widget.userId, dog.id);
+      await removeDogFromUser(dog.id);
       _showSnackBar('${dog.name} removed from user.');
     }
   }
 
   void _showSnackBar(String message) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
     );
@@ -66,9 +54,8 @@ class _UserDogManagerScreenState extends State<UserDogManagerScreen> {
           ),
         ],
       ),
-
       body: FutureBuilder<Map<String, List<DogProfile>>>(
-        future: _loadCombinedData(),
+        future: loadCombinedData(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
@@ -78,7 +65,7 @@ class _UserDogManagerScreenState extends State<UserDogManagerScreen> {
           final userDogs = snapshot.data!['userDogs']!;
 
           if (!_initialized) {
-            _userDogIds = userDogs.map((dog) => dog.id).toSet();
+            _userDogIds = userDogs.map((d) => d.id).toSet();
             _initialized = true;
           }
 
@@ -99,7 +86,7 @@ class _UserDogManagerScreenState extends State<UserDogManagerScreen> {
                           width: 40,
                           height: 40,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
+                          errorBuilder: (_, __, ___) =>
                               const Icon(Icons.image_not_supported),
                         ),
                       ),
@@ -107,10 +94,8 @@ class _UserDogManagerScreenState extends State<UserDogManagerScreen> {
                   ],
                 ),
                 value: isAssigned,
-                onChanged: (bool? value) {
-                  if (value != null) {
-                    _toggleDogAssignment(dog, value);
-                  }
+                onChanged: (val) {
+                  if (val != null) _toggleDogAssignment(dog, val);
                 },
               );
             },
@@ -121,15 +106,15 @@ class _UserDogManagerScreenState extends State<UserDogManagerScreen> {
   }
 
   void _showSelectedDogsDialog() async {
-    final allDogs = await _allDogsFuture;
+    final allDogs = await allDogsFuture;
     final selectedDogs = allDogs
         .where((dog) => _userDogIds.contains(dog.id))
         .toList();
-    if (!mounted) return; // ✅ Prevent using context if widget is disposed
+    if (!mounted) return;
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (_) => AlertDialog(
         title: const Text('Selected Dogs'),
         content: SizedBox(
           width: double.maxFinite,
@@ -139,95 +124,11 @@ class _UserDogManagerScreenState extends State<UserDogManagerScreen> {
                   shrinkWrap: true,
                   itemCount: selectedDogs.length,
                   separatorBuilder: (_, __) => const Divider(),
-                  itemBuilder: (context, index) {
-                    final dog = selectedDogs[index];
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: dog.imageUrl.isNotEmpty
-                                  ? Image.network(
-                                      dog.imageUrl,
-                                      width: 60,
-                                      height: 60,
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              const Icon(
-                                                Icons.image_not_supported,
-                                                size: 60,
-                                              ),
-                                    )
-                                  : const Icon(Icons.pets, size: 60),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    dog.name,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text('${dog.breed} • ${dog.gender}'),
-                                  Text('Age: ${dog.age}'),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 4,
-                          children: [
-                            _infoChip('Weight', dog.weight),
-                            _infoChip('Height', dog.height),
-                            _infoChip('Birth Date', dog.birthDate),
-                            _infoChip('Location', dog.location),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
+                  itemBuilder: (context, index) =>
+                      Text(selectedDogs[index].name),
                 ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
-          ),
-        ],
       ),
     );
-  }
-
-  Widget _infoChip(String label, String value) {
-    return Chip(
-      label: Text(
-        '$label: $value',
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.white, // Ensures readability in dark mode
-        ),
-      ),
-      backgroundColor:
-          Colors.blueGrey.shade700, // Darker background for contrast
-    );
-  }
-
-  Future<Map<String, List<DogProfile>>> _loadCombinedData() async {
-    final allDogs = await _allDogsFuture;
-    final userDogs = await _userDogsFuture;
-    allDogs.sort(
-      (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
-    );
-    return {'allDogs': allDogs, 'userDogs': userDogs};
   }
 }

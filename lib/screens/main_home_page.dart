@@ -4,6 +4,7 @@ import 'package:namer_app/screens/AboutUs.dart';
 import 'package:namer_app/screens/contact.dart';
 import 'package:namer_app/screens/dog_list_screen.dart';
 import 'package:namer_app/screens/doglist.dart';
+import 'package:namer_app/screens/favorites_screen.dart';
 import 'package:namer_app/screens/login_screen.dart';
 import 'package:namer_app/screens/user_dog_manager_screen.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +36,15 @@ class MainHomePage extends StatelessWidget {
             title: const Text('Home'),
             onTap: () {
               Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: const Text('About Us'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AboutPage()),
+              );
             },
           ),
           ExpansionTile(
@@ -74,16 +84,7 @@ class MainHomePage extends StatelessWidget {
             ],
           ),
           ListTile(
-            title: const Text('Contact'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ContactPage()),
-              );
-            },
-          ),
-          ListTile(
-            title: const Text('About'),
+            title: const Text('Adoption Process'),
             onTap: () {
               Navigator.push(
                 context,
@@ -91,6 +92,18 @@ class MainHomePage extends StatelessWidget {
               );
             },
           ),
+          if (userId != null && userId != '')
+            ListTile(
+              title: const Text('My Favourites'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FavouritesScreen(userId: userId),
+                  ),
+                );
+              },
+            ),
         ],
       ),
     );
