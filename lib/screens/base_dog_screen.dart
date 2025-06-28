@@ -7,7 +7,7 @@ import 'package:namer_app/common/constants.dart';
 
 abstract class BaseDogScreen extends StatefulWidget {
   final String userId;
-  const BaseDogScreen({Key? key, required this.userId}) : super(key: key);
+  const BaseDogScreen({super.key, required this.userId});
 }
 
 abstract class BaseDogScreenState<T extends BaseDogScreen> extends State<T> {
@@ -105,28 +105,33 @@ abstract class BaseDogScreenState<T extends BaseDogScreen> extends State<T> {
   List<DogProfile> applyFilters(List<DogProfile> dogs) {
     return dogs.where((d) {
       if (_filters['breed']!.isNotEmpty &&
-          d.breed.toLowerCase() != _filters['breed']!.toLowerCase())
+          d.breed.toLowerCase() != _filters['breed']!.toLowerCase()) {
         return false;
+      }
       if (_filters['gender']!.isNotEmpty &&
-          d.gender.toLowerCase() != _filters['gender']!.toLowerCase())
+          d.gender.toLowerCase() != _filters['gender']!.toLowerCase()) {
         return false;
+      }
 
       if (_filters['age']!.isNotEmpty) {
         final dogAge = int.tryParse(d.age);
         final filterAge = int.tryParse(_filters['age']!);
-        if (dogAge == null || filterAge == null || dogAge != filterAge)
+        if (dogAge == null || filterAge == null || dogAge != filterAge) {
           return false;
+        }
       }
 
       if (_filters['name']!.isNotEmpty &&
-          !d.name.toLowerCase().contains(_filters['name']!.toLowerCase()))
+          !d.name.toLowerCase().contains(_filters['name']!.toLowerCase())) {
         return false;
+      }
 
       if (_filters['location']!.isNotEmpty &&
           !d.location.toLowerCase().contains(
             _filters['location']!.toLowerCase(),
-          ))
+          )) {
         return false;
+      }
 
       return true;
     }).toList();

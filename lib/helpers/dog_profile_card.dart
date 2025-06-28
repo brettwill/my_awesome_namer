@@ -15,7 +15,7 @@ class DogProfileCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   const DogProfileCard({
-    Key? key,
+    super.key,
     required this.name,
     required this.imageUrl,
     required this.profileUrl,
@@ -28,7 +28,7 @@ class DogProfileCard extends StatelessWidget {
     required this.location,
     this.isSelected = false,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

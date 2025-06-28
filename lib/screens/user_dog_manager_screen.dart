@@ -3,8 +3,7 @@ import 'base_dog_screen.dart';
 import '../models/dog_profile.dart';
 
 class UserDogManagerScreen extends BaseDogScreen {
-  const UserDogManagerScreen({Key? key, required String userId})
-    : super(key: key, userId: userId);
+  const UserDogManagerScreen({super.key, required super.userId});
 
   @override
   _UserDogManagerScreenState createState() => _UserDogManagerScreenState();
@@ -16,6 +15,7 @@ class _UserDogManagerScreenState
   Set<String> _userDogIds = {};
   bool _initialized = false;
 
+  @override
   Future<List<DogProfile>> get allDogsFuture async =>
       (await loadCombinedData())['allDogs']!;
 

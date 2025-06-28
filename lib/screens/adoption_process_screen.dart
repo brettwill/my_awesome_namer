@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'contact.dart';
 
 class AdoptionProcessScreen extends StatelessWidget {
-  const AdoptionProcessScreen({Key? key}) : super(key: key);
+  const AdoptionProcessScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
