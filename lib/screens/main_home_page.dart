@@ -184,7 +184,13 @@ class MainHomePage extends StatelessWidget {
           children: [
             const Icon(Icons.pets),
             const SizedBox(width: 10),
-            Text('The way to happiness - Welcome $userName'),
+            Expanded(
+              child: Text(
+                'The way to happiness - Welcome $userName',
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 18),
+              ),
+            ),
           ],
         ),
         actions: [
