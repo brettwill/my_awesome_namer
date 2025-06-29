@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import '../controllers/dog_controller.dart';
 
 class ContactPage extends StatefulWidget {
+  final ContactController? controller;
+  const ContactPage({super.key, this.controller});
   @override
   _ContactPageState createState() => _ContactPageState();
 }
@@ -20,7 +22,7 @@ class _ContactPageState extends State<ContactPage> {
   String _content = '';
   final TextEditingController _contentController = TextEditingController();
   final DogController _dogController = DogController();
-  final ContactController controller = ContactController();
+  late final ContactController controller;
 
   @override
   void initState() {

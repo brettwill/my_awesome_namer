@@ -3,7 +3,7 @@ import 'base_dog_screen.dart';
 import '../models/dog_profile.dart';
 
 class FavouritesScreen extends BaseDogScreen {
-  const FavouritesScreen({super.key, required super.userId});
+  const FavouritesScreen({super.key, required super.userId, super.controller});
 
   @override
   _FavouritesScreenState createState() => _FavouritesScreenState();

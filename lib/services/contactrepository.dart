@@ -1,7 +1,10 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ContactRepository {
-  final SupabaseClient _client = Supabase.instance.client;
+  final SupabaseClient _client;
+
+  ContactRepository({SupabaseClient? client})
+    : _client = client ?? Supabase.instance.client;
 
   Future<void> sendContactData({
     required String salutation,

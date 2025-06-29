@@ -3,7 +3,11 @@ import 'base_dog_screen.dart';
 import '../models/dog_profile.dart';
 
 class UserDogManagerScreen extends BaseDogScreen {
-  const UserDogManagerScreen({super.key, required super.userId});
+  const UserDogManagerScreen({
+    super.key,
+    required super.userId,
+    super.controller,
+  });
 
   @override
   _UserDogManagerScreenState createState() => _UserDogManagerScreenState();

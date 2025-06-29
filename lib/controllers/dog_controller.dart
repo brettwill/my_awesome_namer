@@ -2,7 +2,10 @@ import '../models/dog_profile.dart';
 import '../services/dog_service.dart';
 
 class DogController {
-  final DogService _dogService = DogService();
+  final DogService _dogService;
+
+  DogController({DogService? dogService})
+    : _dogService = dogService ?? DogService();
 
   Future<List<DogProfile>> getAllDogs() => _dogService.fetchDogs();
 

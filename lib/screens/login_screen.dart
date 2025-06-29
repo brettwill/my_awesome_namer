@@ -5,7 +5,8 @@ import 'package:namer_app/controllers/login_controller.dart';
 import 'package:provider/provider.dart';
 
 class MyLogin extends StatefulWidget {
-  const MyLogin({super.key});
+  final LoginController? controller;
+  const MyLogin({super.key, this.controller});
 
   @override
   State<MyLogin> createState() => _MyLoginState();
@@ -14,7 +15,7 @@ class MyLogin extends StatefulWidget {
 class _MyLoginState extends State<MyLogin> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _controller = LoginController();
+  late final LoginController _controller;
 
   String? _errorMessage;
 
@@ -37,6 +38,12 @@ class _MyLoginState extends State<MyLogin> {
         _errorMessage = 'Invalid username or password';
       });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget.controller ?? LoginController();
   }
 
   @override

@@ -7,7 +7,8 @@ import 'package:namer_app/common/constants.dart';
 
 abstract class BaseDogScreen extends StatefulWidget {
   final String userId;
-  const BaseDogScreen({super.key, required this.userId});
+  final DogController? controller;
+  const BaseDogScreen({super.key, required this.userId, this.controller});
 }
 
 abstract class BaseDogScreenState<T extends BaseDogScreen> extends State<T> {
@@ -16,13 +17,14 @@ abstract class BaseDogScreenState<T extends BaseDogScreen> extends State<T> {
   @override
   void initState() {
     super.initState();
+    _controller = widget.controller ?? DogController();
     _allDogsFuture = _controller.getAllDogs();
     _userDogsFuture = _controller.getUserDogs(widget.userId);
     _loadBreeds();
   }
 
   Future<List<DogProfile>> get userDogsFuture => _userDogsFuture;
-  final DogController _controller = DogController();
+  late final DogController _controller;
   late Future<List<DogProfile>> _allDogsFuture;
   late Future<List<DogProfile>> _userDogsFuture;
 
