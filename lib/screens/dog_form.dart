@@ -94,6 +94,15 @@ class _DogFormState extends State<DogForm> {
       }
 
       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              widget.dog == null
+                  ? '${dog.name} added successfully!'
+                  : '${dog.name} updated successfully!',
+            ),
+          ),
+        );
         Navigator.pop(context);
       }
     }

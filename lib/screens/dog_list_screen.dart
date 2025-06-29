@@ -94,13 +94,14 @@ class _DogAdminstrationState extends State<DogAdminstration> {
                       itemBuilder: (context, index) {
                         return DogListItem(
                           dog: _dogs[index],
-                          onTap: () {
-                            Navigator.push(
+                          onTap: () async {
+                            await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (_) => DogForm(dog: _dogs[index]),
                               ),
                             );
+                            _loadDogs(); // Refresh the list after
                           },
                         );
                       },

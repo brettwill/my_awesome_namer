@@ -67,10 +67,11 @@ class _FavouritesScreenState extends BaseDogScreenState<FavouritesScreen> {
             return const Center(child: Text('You have no favourites yet.'));
           }
 
+          final displayDogs = applyFilters(dogs);
           return ListView.builder(
-            itemCount: dogs.length,
+            itemCount: displayDogs.length,
             itemBuilder: (context, index) {
-              final dog = dogs[index];
+              final dog = displayDogs[index];
               return Stack(
                 children: [
                   buildDogProfileCard(dog),
