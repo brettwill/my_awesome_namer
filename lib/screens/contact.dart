@@ -128,9 +128,9 @@ class _ContactPageState extends State<ContactPage> {
               ),
               SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    controller.submitContactForm(
+                    final success = await controller.submitContactForm(
                       salutation: _salutation!,
                       firstName: _firstName,
                       lastName: _lastName,
@@ -138,9 +138,17 @@ class _ContactPageState extends State<ContactPage> {
                       phoneNumber: _phoneNumber,
                       content: _content,
                     );
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Form submitted successfully!')),
-                    );
+                    if (!mounted) return;
+                    if (success) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Form submitted successfully!')),
+                      );
+                      Navigator.of(context).pop();
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error submitting form')),
+                      );
+                    }
                   }
                 },
                 child: Text('Submit'),

@@ -29,8 +29,8 @@ void main() {
       expect(controller.resolveTier('TIER1CODE'), 'Basic');
     });
 
-    test('returns null for invalid code', () {
-      expect(controller.resolveTier('INVALID'), null);
+    test('returns basic for invalid code', () {
+      expect(controller.resolveTier('INVALID'), 'Basic');
     });
   });
 

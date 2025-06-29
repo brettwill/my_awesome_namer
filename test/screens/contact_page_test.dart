@@ -22,7 +22,7 @@ class FakeContactController implements ContactController {
   FakeContactController() : repository = FakeContactRepository();
 
   @override
-  Future<void> submitContactForm({
+  Future<bool> submitContactForm({
     required String salutation,
     required String firstName,
     required String lastName,
@@ -31,6 +31,7 @@ class FakeContactController implements ContactController {
     required String content,
   }) async {
     submitted = true;
+    return true;
   }
 }
 
