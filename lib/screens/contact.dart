@@ -27,6 +27,7 @@ class _ContactPageState extends State<ContactPage> {
   @override
   void initState() {
     super.initState();
+    controller = widget.controller ?? ContactController();
     final userId = Provider.of<UserProvider>(context, listen: false).userId;
     if (userId != null && userId != nullGuid) {
       _dogController.getUserDogs(userId).then((dogs) {

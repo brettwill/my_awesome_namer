@@ -114,17 +114,21 @@ class _MyLoginState extends State<MyLogin> {
                         obscureText: true,
                       ),
                       const SizedBox(height: 24),
-                      ElevatedButton.icon(
-                        onPressed: _handleLogin,
-                        icon: const Icon(Icons.login),
-                        label: const Text('Login'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(
-                            0xFF1B5E20,
-                          ), // Dark green
-                          foregroundColor:
-                              Colors.white, // Ensures text/icon are white
-                          minimumSize: const Size.fromHeight(48),
+                      Semantics(
+                        button: true,
+                        label: 'Log in',
+                        child: ElevatedButton.icon(
+                          onPressed: _handleLogin,
+                          icon: const Icon(Icons.login),
+                          label: const Text('Login'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(
+                              0xFF1B5E20,
+                            ), // Dark green
+                            foregroundColor:
+                                Colors.white, // Ensures text/icon are white
+                            minimumSize: const Size.fromHeight(48),
+                          ),
                         ),
                       ),
 

@@ -41,7 +41,11 @@ class DogDetailScreen extends StatelessWidget {
                       aspectRatio: 1,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image.network(dog.imageUrl, fit: BoxFit.cover),
+                        child: Image.asset(
+                          dog.imageUrl,
+                          fit: BoxFit.cover,
+                          semanticLabel: 'Photo of \${dog.name}',
+                        ),
                       ),
                     ),
                   ),
