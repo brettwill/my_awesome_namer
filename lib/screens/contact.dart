@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/business/contactcontroller.dart';
+import 'package:namer_app/business/user_provider.dart';
+import 'package:namer_app/common/constants.dart';
+import 'package:provider/provider.dart';
+import '../controllers/dog_controller.dart';
 
 class ContactPage extends StatefulWidget {
   @override
@@ -13,7 +17,32 @@ class _ContactPageState extends State<ContactPage> {
   String _lastName = '';
   String _email = '';
   String _phoneNumber = '';
+  String _content = '';
+  final TextEditingController _contentController = TextEditingController();
+  final DogController _dogController = DogController();
   final ContactController controller = ContactController();
+
+  @override
+  void initState() {
+    super.initState();
+    final userId = Provider.of<UserProvider>(context, listen: false).userId;
+    if (userId != null && userId != nullGuid) {
+      _dogController.getUserDogs(userId).then((dogs) {
+        final names = dogs.map((d) => d.name).join(', ');
+        if (!mounted) return;
+        setState(() {
+          _content = names;
+          _contentController.text = names;
+        });
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _contentController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +114,15 @@ class _ContactPageState extends State<ContactPage> {
                 validator: (value) =>
                     value!.isEmpty ? 'Phone number is required' : null,
               ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: _contentController,
+                decoration: InputDecoration(labelText: 'Content*'),
+                maxLines: 4,
+                onChanged: (value) => _content = value,
+                validator: (value) =>
+                    value!.isEmpty ? 'Content is required' : null,
+              ),
               SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () {
@@ -95,6 +133,7 @@ class _ContactPageState extends State<ContactPage> {
                       lastName: _lastName,
                       email: _email,
                       phoneNumber: _phoneNumber,
+                      content: _content,
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Form submitted successfully!')),

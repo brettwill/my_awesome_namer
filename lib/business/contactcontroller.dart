@@ -9,6 +9,7 @@ class ContactController {
     required String lastName,
     required String email,
     required String phoneNumber,
+    required String content,
   }) async {
     try {
       await repository.sendContactData(
@@ -17,6 +18,7 @@ class ContactController {
         lastName: lastName,
         email: email,
         phoneNumber: phoneNumber,
+        content: content,
       );
       print('Contact info  sent successfully!');
     } catch (e) {

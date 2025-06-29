@@ -9,6 +9,7 @@ class ContactRepository {
     required String lastName,
     required String email,
     required String phoneNumber,
+    required String content,
   }) async {
     try {
       await _client.from('contacts').insert({
@@ -17,6 +18,7 @@ class ContactRepository {
         'last_name': lastName,
         'email': email,
         'phone_number': phoneNumber,
+        'content': content,
       });
     } on PostgrestException catch (e) {
       // Handle Supabase-specific errors
