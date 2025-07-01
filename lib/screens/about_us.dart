@@ -172,14 +172,6 @@ class _ContactCard extends StatelessWidget {
                 Text('+41 23455'),
               ],
             ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Icon(Icons.language, color: customGreen),
-                SizedBox(width: 10),
-                Text('www.myweb.ch'),
-              ],
-            ),
           ],
         ),
       ),

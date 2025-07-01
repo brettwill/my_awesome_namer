@@ -98,8 +98,8 @@ class AdoptionProcessScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             const Text(
-              'Every adopter will receive a GIVE-AWAY-BAG upon picking up their dog at the '
-              'Wädenswil/Beichlen transport arrival location from animal-happyend.',
+              'Every adopter will receive a GIVE-AWAY-BAG upon picking up their dog.'
+              '',
               textAlign: TextAlign.justify,
             ),
 
