@@ -63,42 +63,6 @@ class MainHomePage extends StatelessWidget {
               );
             },
           ),
-          /*ExpansionTile(
-            title: const Text('The Dogs'),
-            children: [
-              ListTile(
-                title: const Text('All Dogs'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => DogListScreen()),
-                  );
-                },
-              ),
-              ListTile(
-                title: const Text('Dogs Detail'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => DogAdminstration()),
-                  );
-                },
-              ),
-              if (userId != null && userId != '')
-                ListTile(
-                  title: const Text('Select Your Dogs'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            UserDogManagerScreen(userId: userId),
-                      ),
-                    );
-                  },
-                ),
-            ],
-          ),*/
           ListTile(
             leading: const Icon(Icons.assignment),
             title: const Text('Adoption Process'),
@@ -148,24 +112,103 @@ class MainHomePage extends StatelessWidget {
     );
   }
 
-  Widget buildFeatureCard(IconData icon, String title, String description) {
-    return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Icon(icon, size: 48, color: Colors.teal),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(description, textAlign: TextAlign.center),
-          ],
-        ),
+  Widget buildIntroSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      child: Column(
+        children: const [
+          Text(
+            'Welcome to Fur Real Friend - Adoption',
+            style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 12),
+          Text(
+            'Discover the most adorable dogs and choose your best friend. Our platform helps you connect, learn, and love.',
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildFeatureSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      child: Wrap(
+        spacing: 16,
+        runSpacing: 16,
+        alignment: WrapAlignment.center,
+        children: const [
+          _FeatureCard(
+            icon: Icons.volunteer_activism,
+            title: 'Rescue with Purpose',
+            description:
+                'We save dogs from shelters abroad and place them in loving homes.',
+          ),
+          _FeatureCard(
+            icon: Icons.health_and_safety,
+            title: 'Health Comes First',
+            description:
+                'All dogs receive medical care, vaccinations, and are neutered or spayed.',
+          ),
+          _FeatureCard(
+            icon: Icons.cake,
+            title: 'Joyful Companions',
+            description:
+                'Bringing joy and wagging tails to families through successful adoptions.',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildImageGallery() {
+    final List<String> galleryImages = [
+      'assets/images/gallery1.png',
+      'assets/images/gallery2.png',
+      'assets/images/gallery3.png',
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          double maxWidth = constraints.maxWidth;
+          double imageWidth = maxWidth > 900
+              ? 320
+              : maxWidth > 600
+              ? 280
+              : 240;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                '',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+              Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                alignment: WrapAlignment.center,
+                children: galleryImages.map((path) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.asset(
+                      path,
+                      width: imageWidth,
+                      height: 200,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -176,10 +219,8 @@ class MainHomePage extends StatelessWidget {
     final userId = userProvider.userId ?? nullGuid;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(
-          0xFF1B5E20,
-        ), // This sets the AppBar color to green
-        foregroundColor: Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFF1B5E20),
+        foregroundColor: Colors.white,
         title: Row(
           children: [
             const Icon(Icons.pets),
@@ -247,87 +288,69 @@ class MainHomePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // ✅ Hero Image
-            SizedBox(
-              height: 250,
-              width: double.infinity,
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(24),
+                bottomRight: Radius.circular(24),
+              ),
               child: Image.asset(
-                'assets/images/main_page.png',
-                fit: BoxFit.fill,
+                'assets/images/dog-adoption-form.png',
+                fit: BoxFit.cover,
+                height: 250,
+                width: double.infinity,
               ),
             ),
             const SizedBox(height: 20),
-
-            // ✅ Section: Intro Text
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                children: const [
-                  Text(
-                    'Welcome to Dog World',
-                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    'Discover the most adorable dogs and choose your best friend. Our platform helps you connect, learn, and love.',
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
+            buildIntroSection(),
             const SizedBox(height: 30),
-
-            // ✅ Grid Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  int columns = constraints.maxWidth > 600 ? 3 : 1;
-                  return GridView.count(
-                    crossAxisCount: columns,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    children: [
-                      buildFeatureCard(
-                        Icons.favorite,
-                        'Adopt',
-                        'Find your forever furry friend and bring love home.',
-                      ),
-                      buildFeatureCard(
-                        Icons.pets,
-                        'Browse Breeds',
-                        'Explore dog breeds and learn what suits you.',
-                      ),
-                      buildFeatureCard(
-                        Icons.location_on,
-                        'Find Nearby',
-                        'Locate shelters and dog events near you.',
-                      ),
-                      buildFeatureCard(
-                        Icons.event,
-                        'Events',
-                        'Check upcoming dog shows and adoption drives.',
-                      ),
-                      buildFeatureCard(
-                        Icons.contact_page,
-                        'Contact Us',
-                        'We are here to help you get started.',
-                      ),
-                      buildFeatureCard(
-                        Icons.info,
-                        'About Us',
-                        'Learn more about our mission and community.',
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
+            buildFeatureSection(),
+            const SizedBox(height: 30),
+            buildImageGallery(),
             const SizedBox(height: 30),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _FeatureCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String description;
+
+  const _FeatureCard({
+    required this.icon,
+    required this.title,
+    required this.description,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 280,
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 48, color: const Color(0xFF1B5E20)),
+              const SizedBox(height: 12),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(description, textAlign: TextAlign.center),
+            ],
+          ),
         ),
       ),
     );
