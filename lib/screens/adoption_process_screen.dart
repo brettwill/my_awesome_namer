@@ -12,6 +12,7 @@ class AdoptionProcessScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Adoption Process'),
         backgroundColor: customGreen,
+        foregroundColor: Colors.white, // Ensures text and icon are white
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
@@ -109,6 +110,8 @@ class AdoptionProcessScreen extends StatelessWidget {
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: customGreen,
+                  foregroundColor:
+                      Colors.white, // Ensures text and icon are white
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
                     vertical: 12,

@@ -11,6 +11,7 @@ class AboutPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('About Us'),
         backgroundColor: customGreen,
+        foregroundColor: Colors.white, // Ensures text and icon are white
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
@@ -64,10 +65,12 @@ class AboutPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               child: Image.asset(
                 'assets/images/teamphoto.png',
-                fit: BoxFit.none,
-                alignment: Alignment.topLeft,
+                fit: BoxFit
+                    .cover, // Ensures the image fills the space proportionally
+                alignment: Alignment.center, // Centers the image
               ),
             ),
+
             const SizedBox(height: 20),
 
             // Contact
